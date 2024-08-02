@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Instant Photo Print</title>
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Boxicons CSS -->
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- <div class="container"> -->
+    <nav class="sidebar">
+      <header>
+        <div class="image-text">
+          <span class="image">
+            <img src="images/logo.jpeg" alt="logo" />
+          </span>
+        </div>
+
+        <div class="text-header-text">
+          <span class="name">Instant Photo Print</span>
+        </div>
+
+       
+      <!-- ===MenuBar=== -->
+
+      <div class="menu-bar">
+        <div class="menu">
+          <ul class="menu-links">
+            <li class="nav-link">
+              <a href="">
+                <i class="bx bx-home-alt icon">
+                  <span class="text nav-text"> Dashboard</span>
+                </i>
+              </a>
+            </li>
+
+            <li class="nav-link">
+              <a href="">
+                <i class="bx bx-brightness-half icon">
+                  <span class="text nav-text"> Brightness</span>
+                </i>
+              </a>
+            </li>
+
+            <div class="label-brightness">
+              <label for="brightness"></label>
+              <input
+                type="range"
+                id="brightness"
+                min="0"
+                max="200"
+                value="100"
+              />
+            </div>
+
+            <li class="nav-link">
+              <a href="">
+                <i class="bx bxs-circle-half icon">
+                  <span class="text nav-text"> Contrast</span>
+                </i>
+              </a>
+            </li>
+
+            <div class="label-contrast">
+                <label for="contrast"></label>
+                <input type="range" id="contrast" min="0" max="200" value="100" />
+            </div>
+
+            <li class="nav-link">
+              <a href="">
+                <i class="bx bxs-tone icon">
+                  <span class="text nav-text">Grayscale</span>
+                </i>
+              </a>
+            </li>
+
+            <div class="label-grayscale">
+                <label for="grayscale"></label>
+        <input type="range" id="grayscale" min="0" max="100" value="0" />
+            </div>
+
+            <li class="nav-link">
+              <a href="">
+                <i class="bx bx-crop icon">
+                  <span  class="text nav-text">Crop</span>
+                </i>
+              </a>
+            </li>
+
+            <li class="nav-link">
+              <a href="">
+                <i class="bx bxs-add-to-queue icon">
+                  <span id="addText" class="text nav-text">Add Name/Date</span>
+                </i>
+              </a>
+            </li>
+
+            <li class="nav-link">
+              <a href="">
+                <i class="bx bx-minus-back icon">
+                  <span class="text nav-text">Min Background</span>
+                </i>
+              </a>
+            </li>
+
+            <li class="nav-link">
+              <a href="">
+                <i class="bx bx-printer icon">
+                  <span class="text nav-text">Print Layout</span>
+                </i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="photo-editor">
+
+        
+        <!-- input page -->
+<div class="container">
+    <i class='bx bxs-file-image icon'>
+        <input type="file" id="upload" accept="image/*">
+    </i>
+    <div class="img-area">
+        <i class='bx bx-cloud-upload icon1'></i> 
+         <h3>Upload Image</h3> 
+        <canvas id="photoCanvas" width="0" height="0" ></canvas>
+    </div>
+    <br>
+    <!-- <button class="select-image">Select Image</button> -->
+</div>
+
+
+
+
+
+
+        <!-- <div  class="display-image"> -->
+    
+          
+        <!-- </div> -->
+
+    
+
+
+
+
+
+
+
+       
+
+     
+     
+        <!-- <div class="controls">  
+        <button id="crop">Crop</button>
+       
+        <button id="removeBackground">Remove Background</button>
+        <button id="printLayout">Print Layout</button>
+      </div> -->
+    </div>
+    <!-- </div> -->
+    <script src="script.js"></script>
+  </body>
+</html>
