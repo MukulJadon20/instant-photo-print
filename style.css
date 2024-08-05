@@ -18,13 +18,11 @@
     --trans-03: all 0.3s ease;
     --trans-04: all 0.4s ease;
     --trans-05: all 0.4s ease;
-
 }
 
 body {
     font-family: Arial, sans-serif;
     background: var(--body-color);
-    /* background-color: #f0f0f0; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -40,28 +38,20 @@ body {
     border-radius: 30px;
     overflow: hidden;
     margin-left: 100px;
-
 }
-
-
-/* ===resuseablecss=== */
 
 .text-header-text {
     font-size: 14px;
-    font-weight: 500px;
+    font-weight: 500;
     padding: 1px 40px;
     color: purple;
 }
-
 
 .image {
     min-width: 60px;
     display: flex;
     align-items: center;
-
 }
-
-/* ===sidebar=== */
 
 .sidebar {
     position: fixed;
@@ -72,11 +62,11 @@ body {
     padding: 1px 14px;
     background: var(--sidebar-color);
     overflow: scroll;
+    transition: var(--trans-03);
 }
 
 li {
     height: 60px;
-    margin-top: 0px;
     list-style: none;
     display: flex;
     align-items: center;
@@ -99,11 +89,9 @@ li {
     border-radius: 6px;
     padding: 10px;
     margin-left: 50px;
-
 }
 
 .sidebar header .image-text {
-
     display: flex;
     align-items: center;
 }
@@ -119,17 +107,12 @@ image {
     width: 50px;
     height: 90px;
     border-radius: 6px;
-
 }
 
-
-
-
-*/ .photo-editor {
+.photo-editor {
     display: flex;
     flex-direction: column;
     align-items: center;
-
 }
 
 #photoCanvas {
@@ -167,17 +150,12 @@ image {
     background: #0056b3;
 }
 
-
 .display-image {
     width: 40vw;
     height: 40vh;
     margin: 50px;
     border: 2px solid black;
 }
-
-
-/* ===inupt area=== */
-
 
 .icon1 {
     font-size: 100px;
@@ -189,7 +167,6 @@ image {
     font-weight: 500;
     margin-bottom: 6px;
     margin-left: 70px;
-
 }
 
 .select-image {
@@ -204,20 +181,17 @@ image {
     border: none;
     cursor: pointer;
     transition: all .3s ease;
-
 }
 
 .select-image:hover {
     background: var(--primary-color-light);
 }
 
-
 .label-textName {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-
 }
 
 #nameInput {
@@ -236,8 +210,6 @@ image {
     border-radius: 12px;
 }
 
-
-
 .collapsible {
     max-width: 450px;
     overflow: hidden;
@@ -251,21 +223,17 @@ image {
     display: block;
 }
 
-
 #tooglebtn,
 #tooglebtn1 {
     background: #fff;
     font-size: large;
     color: grey;
-    margin-right: rem;
     border: none;
-
 }
 
 .custom-label,
 .addtext-label {
     display: flex;
-
 }
 
 .hide-btn {
@@ -275,9 +243,7 @@ image {
     background-color: var(--body-color);
 }
 
-
 .hide-btn1 {
-    margin: px;
     padding: 20px;
     margin-left: 190px;
     background-color: var(--body-color);
@@ -286,7 +252,6 @@ image {
 #cropPassport #cropCustom {
     font-size: 200px;
     background: var(--body-color);
-
 }
 
 .btn1 {
@@ -297,10 +262,9 @@ image {
     display: flex;
     margin-top: 4px;
     border-radius: 0.5rem;
-
 }
 
-.btn1:hover{
+.btn1:hover {
     background: var(--primary-color-light);
 }
 
@@ -310,11 +274,9 @@ image {
     font-size: 1.2rem;
 }
 
-#addText:hover{
+#addText:hover {
     background: var(--primary-color-light);
 }
-
-
 
 /* Responsive Styles */
 @media (max-width: 768px) {
@@ -325,37 +287,20 @@ image {
     }
 
     .sidebar {
-        width: 200px;
-        padding: 1px 10px;
+        display: none;
     }
 
-    .sidebar .image-text img {
-        width: 80px;
-        margin-left: 30px;
-    }
-
-    .icon1 {
-        font-size: 80px;
-        margin-left: 40px;
-    }
-
-    .img-area h3 {
-        font-size: 18px;
-        margin-left: 50px;
-    }
-
-    .controls input[type="range"] {
-        width: 150px;
-    }
-
-    .controls button {
-        padding: 8px 16px;
-    }
-
-    .display-image {
-        width: 70vw;
-        height: 30vh;
-        margin: 20px;
+    .menu-btn {
+        display: block;
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        background: var(--primary-color);
+        color: #fff;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 1000;
     }
 }
 
@@ -398,4 +343,9 @@ image {
         height: 20vh;
         margin: 10px;
     }
+}
+
+/* Show sidebar when menu button is clicked */
+.sidebar.open {
+    display: block;
 }
