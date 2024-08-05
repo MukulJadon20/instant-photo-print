@@ -14,7 +14,7 @@
   </head>
   <body>
     <!-- <div class="container"> -->
-    <nav class="sidebar">
+    <nav class="sidebar close">
       <header>
         <div class="image-text">
           <span class="image">
@@ -29,113 +29,133 @@
        
       <!-- ===MenuBar=== -->
 
-      <div class="menu-bar">
-        <div class="menu">
-          <ul class="menu-links">
-            <li class="nav-link">
-              <a href="">
-                <i class="bx bx-home-alt icon">
-                  <span class="text nav-text"> Dashboard</span>
-                </i>
-              </a>
-            </li>
+<div class="menu-bar">
+  <div class="menu">
+    <ul class="menu-links">
+      <li class="nav-link">
+        <a href="">
+          <i class="bx bx-home-alt icon">
+            <span class="text nav-text"> Dashboard</span>
+          </i>
+        </a>
+      </li>
 
-            <li class="nav-link">
-              <a href="">
-                <i class="bx bx-brightness-half icon">
-                  <span class="text nav-text"> Brightness</span>
-                </i>
-              </a>
-            </li>
+      <li class="nav-link">
+        <a href="">
+          <i class="bx bx-brightness-half icon">
+            <span class="text nav-text"> Brightness</span>
+          </i>
+        </a>
+      </li>
 
-            <div class="label-brightness">
-              <label for="brightness"></label>
-              <input
-                type="range"
-                id="brightness"
-                min="0"
-                max="200"
-                value="100"
-              />
-            </div>
-
-            <li class="nav-link">
-              <a href="">
-                <i class="bx bxs-circle-half icon">
-                  <span class="text nav-text"> Contrast</span>
-                </i>
-              </a>
-            </li>
-
-            <div class="label-contrast">
-                <label for="contrast"></label>
-                <input type="range" id="contrast" min="0" max="200" value="100" />
-            </div>
-
-            <li class="nav-link">
-              <a href="">
-                <i class="bx bxs-tone icon">
-                  <span class="text nav-text">Grayscale</span>
-                </i>
-              </a>
-            </li>
-
-            <div class="label-grayscale">
-                <label for="grayscale"></label>
-        <input type="range" id="grayscale" min="0" max="100" value="0" />
-            </div>
-
-            <li class="nav-link">
-              <a href="">
-                <i class="bx bx-crop icon">
-                  <span  class="text nav-text">Crop</span>
-                </i>
-              </a>
-            </li>
-
-            <li class="nav-link">
-              <a href="">
-                <i class="bx bxs-add-to-queue icon">
-                  <span id="addText" class="text nav-text">Add Name/Date</span>
-                </i>
-              </a>
-            </li>
-
-            <li class="nav-link">
-              <a href="">
-                <i class="bx bx-minus-back icon">
-                  <span class="text nav-text">Min Background</span>
-                </i>
-              </a>
-            </li>
-
-            <li class="nav-link">
-              <a href="">
-                <i class="bx bx-printer icon">
-                  <span class="text nav-text">Print Layout</span>
-                </i>
-              </a>
-            </li>
-          </ul>
-        </div>
+      <div class="label-brightness">
+        <label for="brightness"></label>
+        <input
+          type="range"
+          id="brightness"
+          min="0"
+          max="200"
+          value="100"
+        />
       </div>
+
+      <li class="nav-link">
+        <a href="">
+          <i class="bx bxs-circle-half icon">
+            <span class="text nav-text"> Contrast</span>
+          </i>
+        </a>
+      </li>
+
+      <div class="label-contrast">
+          <label for="contrast"></label>
+          <input type="range" id="contrast" min="0" max="200" value="100" />
+      </div>
+
+      <li class="nav-link">
+        <a href="">
+          <i class="bx bxs-tone icon">
+            <span class="text nav-text">Grayscale</span>
+          </i>
+        </a>
+      </li>
+
+      <div class="label-grayscale">
+          <label for="grayscale"></label>
+  <input type="range" id="grayscale" min="0" max="100" value="0" />
+      </div>
+
+
+
+     
+
+      <li class="nav-link">
+       <div class="custom-label">
+        <a href="">
+          <i class="bx bx-crop icon">
+            
+            <!-- <span  class="text nav-text">Crop</span> -->
+          </i>
+       
+        </a>
+        <button id="tooglebtn" onclick="toggle();">CustomPhoto</button>
+       </div>
+      </li>
+
+      <li class="nav-link">
+        <div class="addtext-label">
+          <a href="">
+            <i class='bx bx-comment icon' >
+              <!-- <span type="button"  class="text nav-text">Add Name/Date</span> -->
+            </i>
+
+          </a>
+          <button id="tooglebtn1" onclick="togglebtn();">Add Name/Date</button>
+        
+        </div>
+      </li>
+
+
+      
+
+ 
+
+      <li class="nav-link">
+        <a href="">
+          <i class="bx bx-minus-back icon">
+            <span class="text nav-text">Min Background</span>
+          </i>
+        </a>
+      </li>
+
+      <li class="nav-link">
+        <a href="">
+          <i class="bx bx-printer icon">
+            <span class="text nav-text">Print Layout</span>
+          </i>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+      
     </nav>
     <div class="photo-editor">
 
         
         <!-- input page -->
-<div class="container">
-    <i class='bx bxs-file-image icon'>
-        <input type="file" id="upload" accept="image/*">
-    </i>
-    <div class="img-area">
-        <i class='bx bx-cloud-upload icon1'></i> 
-         <h3>Upload Image</h3> 
-        <canvas id="photoCanvas" width="0" height="0" ></canvas>
-    </div>
-    <br>
-    <!-- <button class="select-image">Select Image</button> -->
-</div>
+        <div class="container">
+          <i class='bx bxs-file-image icon'>
+              <input type="file" id="upload" accept="image/*">
+          </i>
+          <div class="img-area">
+              <i class='bx bx-cloud-upload icon1'></i> 
+               <h3>Upload Image</h3> 
+              <canvas id="photoCanvas" width="0" height="0" ></canvas>
+          </div>
+          <br>
+          <!-- <button class="select-image">Select Image</button> -->
+      </div>
 
 
 
@@ -148,23 +168,51 @@
         <!-- </div> -->
 
     
+        <div class="rotate">
+          <label class="title">Rotate & Flip</label>
+          <div  class="options">
+              <button id="left"><i class="bx bx-rotate-left"></i></button>
+              <button id="right"><i class='bx bx-rotate-right'></i></i></button>
+              <button id="horizontal"><i class='bx bx-reflect-vertical'></i></button>
+              <button id="vertical"><i class='bx bx-reflect-horizontal' ></i></button>
+          </div>
+      </div>
 
 
 
 
-
-
-
+      <div>
        
+        <button class="hide-btn" id="button" type="button">
+          <input class="btn1" type="submit" value="Crop Image" id="cropPassport">
+          <input  class="btn1" type="submit" value="Crop Custom Image"id="cropCustom">
+        </button>
+        <br /><br />
+        
+      </div>
+      
+   <button class="hide-btn1" id="button1" type="button">
+      <div  class="label-textName">
+        <label for="nameInput"></label>
+        <input type="text" id="nameInput" />
+        <label for="dateInput"></label>
+        <input type="date" id="dateInput" />
+        <input type="submit" value="Add" id="addText">
+        <!-- <button id="addText">Add </button> -->
+
+      </div>
+     
+    </button>
 
      
      
-        <!-- <div class="controls">  
-        <button id="crop">Crop</button>
-       
-        <button id="removeBackground">Remove Background</button>
-        <button id="printLayout">Print Layout</button>
-      </div> -->
+        <div class="controls">  
+        <!-- <button id="cropPassport">Crop</button> -->
+         <!-- <input type="submit" value="crop" id="cropPassport">
+        <button id="cropCustom">Crop Custom Size</button> -->
+        <!-- <button id="removeBackground" >Remove Background</button>
+        <button id="printLayout"></button> -->
+      </div>
     </div>
     <!-- </div> -->
     <script src="script.js"></script>

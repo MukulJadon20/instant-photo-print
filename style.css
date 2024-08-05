@@ -32,7 +32,7 @@ body {
     margin: 0;
 }
 
-.container{
+.container {
     max-width: 400px;
     width: 80%;
     background: #fff;
@@ -46,7 +46,7 @@ body {
 
 /* ===resuseablecss=== */
 
- .text-header-text {
+.text-header-text {
     font-size: 14px;
     font-weight: 500px;
     padding: 1px 40px;
@@ -54,7 +54,7 @@ body {
 }
 
 
- .image {
+.image {
     min-width: 60px;
     display: flex;
     align-items: center;
@@ -71,7 +71,7 @@ body {
     width: 250px;
     padding: 1px 14px;
     background: var(--sidebar-color);
-    overflow:scroll;
+    overflow: scroll;
 }
 
 li {
@@ -90,11 +90,6 @@ li {
     min-width: 60px;
 }
 
-
-/* a:hover{
-    background: var(--primary-color);
-} */
-
 .sidebar header {
     position: relative;
 }
@@ -108,7 +103,7 @@ li {
 }
 
 .sidebar header .image-text {
-    
+
     display: flex;
     align-items: center;
 }
@@ -118,8 +113,9 @@ li {
     flex-direction: column;
 }
 
-.sidebar .image-text ,image {
-    max-width: 10px ;
+.sidebar .image-text,
+image {
+    max-width: 10px;
     width: 50px;
     height: 90px;
     border-radius: 6px;
@@ -133,7 +129,7 @@ li {
     display: flex;
     flex-direction: column;
     align-items: center;
-   
+
 }
 
 #photoCanvas {
@@ -172,7 +168,7 @@ li {
 }
 
 
-.display-image{
+.display-image {
     width: 40vw;
     height: 40vh;
     margin: 50px;
@@ -182,27 +178,13 @@ li {
 
 /* ===inupt area=== */
 
-/* .img-area{
-    position: relative;
-    width: 100%;
-    height: 240px;
-    background: gray;
-    margin-top: 30px;
-    margin-bottom: 30px;
-    border-radius: 15px;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-} */
 
- .icon1{
+.icon1 {
     font-size: 100px;
     margin-left: 80px;
 }
 
-.img-area h3{
+.img-area h3 {
     font-size: 20px;
     font-weight: 500;
     margin-bottom: 6px;
@@ -210,12 +192,12 @@ li {
 
 }
 
-.select-image{
+.select-image {
     display: block;
     width: 100%;
     padding: 16px;
-    border-radius:15px ;
-    background:var(--primary-color);
+    border-radius: 15px;
+    background: var(--primary-color);
     color: #fff;
     font-weight: 500;
     font-size: 16px;
@@ -225,35 +207,195 @@ li {
 
 }
 
-.select-image:hover{
+.select-image:hover {
     background: var(--primary-color-light);
 }
-/* .nav{
-    padding: 0.5rem 1rem;
-    background: white;
-    border-bottom: 1px solid rgb(244,244,244);
-    position: sticky;
-    top: 0;
-    z-index: 1;
+
+
+.label-textName {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: space-around;
     align-items: center;
+
 }
 
-.logo{
-    font-size: 2rem;
-    color: rgb(182,34,34);
-    
+#nameInput {
+    font-size: 12px;
+    border-radius: 12px;
 }
 
-#upload-file{
+#addText {
+    font-size: 15px;
+    border-radius: 5px;
+}
+
+#dateInput {
+    margin: 10px;
+    font-size: 12px;
+    border-radius: 12px;
+}
+
+
+
+.collapsible {
+    max-width: 450px;
+    overflow: hidden;
+    font-weight: 500;
+}
+
+.collapsible label {
+    position: relative;
+    font-weight: 600;
+    background: #fff;
+    display: block;
+}
+
+
+#tooglebtn,
+#tooglebtn1 {
+    background: #fff;
+    font-size: large;
+    color: grey;
+    margin-right: rem;
     border: none;
-    outline: none;
-    background: rgb(89,150,248);
-    color: white;
-    border: radius 0.2rem;
-    padding: 0.5rem 1rem ;
-    font-size: 1.2rem;
-    margin-right: 0.5rem;
 
-} */
+}
+
+.custom-label,
+.addtext-label {
+    display: flex;
+
+}
+
+.hide-btn {
+    padding: 10px;
+    margin-left: 190px;
+    box-sizing: border-box;
+    background-color: var(--body-color);
+}
+
+
+.hide-btn1 {
+    margin: px;
+    padding: 20px;
+    margin-left: 190px;
+    background-color: var(--body-color);
+}
+
+#cropPassport #cropCustom {
+    font-size: 200px;
+    background: var(--body-color);
+
+}
+
+.btn1 {
+    position: relative;
+    background-color: var(--primary-color);
+    font-size: 20px;
+    color: #FFF;
+    display: flex;
+    margin-top: 4px;
+    border-radius: 0.5rem;
+
+}
+
+.btn1:hover{
+    background: var(--primary-color-light);
+}
+
+#addText {
+    background: var(--primary-color);
+    color: #FFF;
+    font-size: 1.2rem;
+}
+
+#addText:hover{
+    background: var(--primary-color-light);
+}
+
+
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .sidebar {
+        width: 200px;
+        padding: 1px 10px;
+    }
+
+    .sidebar .image-text img {
+        width: 80px;
+        margin-left: 30px;
+    }
+
+    .icon1 {
+        font-size: 80px;
+        margin-left: 40px;
+    }
+
+    .img-area h3 {
+        font-size: 18px;
+        margin-left: 50px;
+    }
+
+    .controls input[type="range"] {
+        width: 150px;
+    }
+
+    .controls button {
+        padding: 8px 16px;
+    }
+
+    .display-image {
+        width: 70vw;
+        height: 30vh;
+        margin: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        width: 100%;
+        padding: 20px;
+    }
+
+    .sidebar {
+        width: 180px;
+        padding: 1px 8px;
+    }
+
+    .sidebar .image-text img {
+        width: 70px;
+        margin-left: 20px;
+    }
+
+    .icon1 {
+        font-size: 60px;
+        margin-left: 20px;
+    }
+
+    .img-area h3 {
+        font-size: 16px;
+        margin-left: 30px;
+    }
+
+    .controls input[type="range"] {
+        width: 120px;
+    }
+
+    .controls button {
+        padding: 6px 12px;
+    }
+
+    .display-image {
+        width: 90vw;
+        height: 20vh;
+        margin: 10px;
+    }
+}

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Instant Photo Print</title>
+    <style>body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f5f5f5;
+  }
+  
+  .container {
+      margin: 20px auto;
+      width: 80%;
+      max-width: 800px;
+      background-color: #fff;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 10px;
+  }
+  
+  #photoEditor {
+      margin: 20px 0;
+      position: relative;
+  }
+  
+  canvas {
+      border: 1px solid #ccc;
+      width: 100%;
+      max-width: 100%;
+  }
+  
+  .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+  }
+  
+  button {
+      padding: 10px 20px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+  }
+  
+  button:hover {
+      background-color: #0056b3;
+  }
+  </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Instant Photo Print</h1>
+      <input type="file" id="photoUpload" accept="image/*" />
+      <div id="photoEditor">
+        <canvas id="photoCanvas"></canvas>
+      </div>
+      <div class="controls">
+        <button id="cropPassport">Crop to 3:4 Ratio</button>
+        <button id="cropCustom">Crop Custom Size</button>
+      </div>
+      <button id="download">Download Photo</button>
+    </div>
+    <script>document.getElementById('photoUpload').addEventListener('change', handlePhotoUpload);
+      document.getElementById('cropPassport').addEventListener('click', cropToRatio);
+      document.getElementById('cropCustom').addEventListener('click', cropCustomSize);
+      document.getElementById('download').addEventListener('click', downloadPhoto);
+      
+      let canvas = document.getElementById('photoCanvas');
+      let ctx = canvas.getContext('2d');
+      let image = new Image();
+      
+      function handlePhotoUpload(event) {
+          let file = event.target.files[0];
+          let reader = new FileReader();
+          reader.onload = function(e) {
+              image.src = e.target.result;
+              image.onload = function() {
+                  canvas.width = image.width;
+                  canvas.height = image.height;
+                  ctx.drawImage(image, 0, 0);
+              };
+          };
+          reader.readAsDataURL(file);
+      }
+      
+      function cropToRatio() {
+          let targetRatio = 3 / 4;
+          let imgRatio = image.width / image.height;
+          let cropWidth, cropHeight;
+      
+          if (imgRatio > targetRatio) {
+              cropHeight = image.height;
+              cropWidth = cropHeight * targetRatio;
+          } else {
+              cropWidth = image.width;
+              cropHeight = cropWidth / targetRatio;
+          }
+      
+          let cropX = (image.width - cropWidth) / 2;
+          let cropY = (image.height - cropHeight) / 2;
+      
+          cropImage(cropWidth, cropHeight, cropX, cropY);
+      }
+      
+      function cropCustomSize() {
+          let customWidth = parseInt(prompt("Enter custom width in pixels:", "300"));
+          let customHeight = parseInt(prompt("Enter custom height in pixels:", "400"));
+          let cropX = (image.width - customWidth) / 2;
+          let cropY = (image.height - customHeight) / 2;
+          cropImage(customWidth, customHeight, cropX, cropY);
+      }
+      
+      function cropImage(width, height, startX, startY) {
+          let croppedCanvas = document.createElement('canvas');
+          let croppedCtx = croppedCanvas.getContext('2d');
+          croppedCanvas.width = width;
+          croppedCanvas.height = height;
+          croppedCtx.drawImage(image, startX, startY, width, height, 0, 0, width, height);
+          canvas.width = width;
+          canvas.height = height;
+          ctx.drawImage(croppedCanvas, 0, 0);
+      }
+      
+      function downloadPhoto() {
+          let link = document.createElement('a');
+          link.download = 'cropped_photo.png';
+          link.href = canvas.toDataURL();
+          link.click();
+      }
+      </script>
+  </body>
+</html>
