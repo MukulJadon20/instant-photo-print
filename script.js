@@ -188,105 +188,95 @@ function unhideLabel2() {
   }
 }
 
+
+function unhideLabel3() {
+  var label = document.getElementById("myLabel3");
+  if (label.style.display === "none") {
+    label.style.display = "block";
+  } else {
+    label.style.display = "none";
+  }
+}
+
 // ===== ROTATE AND FLIP=====
 
-// const photoCanvas = document.getElementById("photoCanvas");
-// const ctx = photoCanvas.getContext("2d");
-// const upload = document.getElementById("upload");
-
-
-// let img = new Image();
-// let currentRotation = 0;
-// let flippedHorizontal = false;
-// let flippedVertical = false;
-
-// upload.addEventListener("change", (event) => {
-//   const file = event.target.files[0];
-//   if (file) {
-//     const reader = new FileReader();
-//     reader.onload = (e) => {
-//       img.src = e.target.result;
-//       img.onload = () => {
-//         resetTransformations();
-//         drawImage();
-//       };
-//     };
-//     reader.readAsDataURL(file);
-//   }
-// });
-
-// function drawImage() {
-//   photoCanvas.width = img.width;
-//   photoCanvas.height = img.height;
-//   ctx.clearRect(0, 0, photoCanvas.width, photoCanvas.height);
-//   ctx.save();
-//   ctx.translate(photoCanvas.width / 2, photoCanvas.height / 2);
-//   ctx.rotate((currentRotation * Math.PI) / 180);
-//   ctx.scale(flippedHorizontal ? -1 : 1, flippedVertical ? -1 : 1);
-//   ctx.drawImage(img, -img.width / 2, -img.height / 2);
-//   ctx.restore();
-// }
-
-// function resetTransformations() {
-//   currentRotation = 0;
-//   flippedHorizontal = false;
-//   flippedVertical = false;
-// }
-
-// function rotateLeft() {
-//   currentRotation -= 90;
-//   drawImage();
-// }
-
-// function rotateRight() {
-//   currentRotation += 90;
-//   drawImage();
-// }
-
-// function flipHorizontal() {
-//   flippedHorizontal = !flippedHorizontal;
-//   drawImage();
-// }
-
-// function flipVertical() {
-//   flippedVertical = !flippedVertical;
-//   drawImage();
-// }
-
-// function downloadImage() {
-//   const link = document.createElement("a");
-//   link.download = "edited-photo.png";
-//   link.href = photoCanvas.toDataURL();
-//   link.click();
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+const photoCanvas = document.getElementById("photoCanvas");
+const ctx = photoCanvas.getContext("2d");
+const upload = document.getElementById("upload");
 const canvas = document.getElementById('photoCanvas');
-const ctx = canvas.getContext('2d');
-const upload = document.getElementById('upload');
 const copiesContainer = document.getElementById('copies');
+const copyCountInput = document.getElementById('copyCount');
+
+
 let img = new Image();
 let currentRotation = 0;
 let flippedHorizontal = false;
 let flippedVertical = false;
+
+upload.addEventListener("change", (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      img.src = e.target.result;
+      img.onload = () => {
+        resetTransformations();
+        drawImage();
+      };
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+function drawImage() {
+  photoCanvas.width = img.width;
+  photoCanvas.height = img.height;
+  ctx.clearRect(0, 0, photoCanvas.width, photoCanvas.height);
+  ctx.save();
+  ctx.translate(photoCanvas.width / 2, photoCanvas.height / 2);
+  ctx.rotate((currentRotation * Math.PI) / 180);
+  ctx.scale(flippedHorizontal ? -1 : 1, flippedVertical ? -1 : 1);
+  ctx.drawImage(img, -img.width / 2, -img.height / 2);
+  ctx.restore();
+}
+
+function resetTransformations() {
+  currentRotation = 0;
+  flippedHorizontal = false;
+  flippedVertical = false;
+}
+
+function rotateLeft() {
+  currentRotation -= 90;
+  drawImage();
+}
+
+function rotateRight() {
+  currentRotation += 90;
+  drawImage();
+}
+
+function flipHorizontal() {
+  flippedHorizontal = !flippedHorizontal;
+  drawImage();
+}
+
+function flipVertical() {
+  flippedVertical = !flippedVertical;
+  drawImage();
+}
+
+function downloadImage() {
+  const link = document.createElement("a");
+  link.download = "edited-photo.png";
+  link.href = photoCanvas.toDataURL();
+  link.click();
+}
+
+
+
+// ======COPY AND PRINT IMAGES=====
+
 
 upload.addEventListener('change', (event) => {
     const file = event.target.files[0];
@@ -295,66 +285,58 @@ upload.addEventListener('change', (event) => {
         reader.onload = (e) => {
             img.src = e.target.result;
             img.onload = () => {
-                resetTransformations();
-                drawImage();
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img, 0, 0);
             };
         };
         reader.readAsDataURL(file);
     }
 });
 
-function drawImage() {
-    canvas.width = img.width;
-    canvas.height = img.height;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.save();
-    ctx.translate(canvas.width / 2, canvas.height / 2);
-    ctx.rotate(currentRotation * Math.PI / 180);
-    ctx.scale(flippedHorizontal ? -1 : 1, flippedVertical ? -1 : 1);
-    ctx.drawImage(img, -img.width / 2, -img.height / 2);
-    ctx.restore();
-}
-
-function resetTransformations() {
-    currentRotation = 0;
-    flippedHorizontal = false;
-    flippedVertical = false;
-}
-
-function rotateLeft() {
-    currentRotation -= 90;
-    drawImage();
-}
-
-function rotateRight() {
-    currentRotation += 90;
-    drawImage();
-}
-
-function flipHorizontal() {
-    flippedHorizontal = !flippedHorizontal;
-    drawImage();
-}
-
-function flipVertical() {
-    flippedVertical = !flippedVertical;
-    drawImage();
-}
-
 function copyImage() {
-    const copy = new Image();
-    copy.src = canvas.toDataURL();
-    copy.className = 'copied-image';
-    copiesContainer.appendChild(copy);
+    const copyCount = parseInt(copyCountInput.value);
+    if (img.src && copyCount > 0) {
+        copiesContainer.innerHTML = ''; // Clear previous copies
+        for (let i = 0; i < copyCount; i++) {
+            const copiedImg = new Image();
+            copiedImg.src = canvas.toDataURL();
+            copiedImg.classList.add('copied-image');
+            copiesContainer.appendChild(copiedImg);
+        }
+    } else {
+        alert('Please upload an image and specify a valid number of copies.');
+    }
 }
 
 function printImages() {
-    const printWindow = window.open('', '_blank');
-    printWindow.document.write('<html><head><title>Print Copies</title></head><body>');
-    copiesContainer.querySelectorAll('img').forEach(img => {
-        printWindow.document.write(`<img src="${img.src}" style="margin: 10px; max-width: 100px; max-height: 100px; border: 1px solid #ccc;">`);
-    });
-    printWindow.document.write('</body></html>');
+    if (copiesContainer.children.length === 0) {
+        alert('No images to print.');
+        return;
+    }
+
+    const printWindow = window.open('', '', 'height=600,width=800');
+    const styles = `
+        <style>
+            body { margin: 0; padding: 20px; }
+            .print-container { display: flex; flex-wrap: wrap; }
+            .copied-image { margin: 10px; border: 1px solid #ccc; max-width: 100px; max-height: 100px; }
+        </style>
+    `;
+    const content = `
+        <html>
+        <head>
+            ${styles}
+        </head>
+        <body>
+            <div class="print-container">
+                ${Array.from(copiesContainer.children).map(child => `<img src="${child.src}" class="copied-image">`).join('')}
+            </div>
+        </body>
+        </html>
+    `;
+    printWindow.document.write(content);
     printWindow.document.close();
+    printWindow.focus();
     printWindow.print();
 }

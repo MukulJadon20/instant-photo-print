@@ -228,11 +228,13 @@ image {
 
 #tooglebtn,
 #tooglebtn1,
-#tooglebtn2 {
+#tooglebtn2,
+#tooglebtn3 {
     background: #fff;
     font-size: large;
     color: grey;
     border: none;
+    text-decoration: none;
 }
 
 .custom-label,
@@ -282,6 +284,23 @@ image {
     border-radius: 0.5rem;
 }
 
+#myLabel3{
+    margin-left: 50px;
+}
+
+#copyCount{
+    margin-left: 8px;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+.copy-btn{
+    background-color: rgb(128,0,128);
+    border-radius: 0.5rem;
+    font-size: 15px;
+    display: flex;
+    margin-top: 10px;
+}
 
 .btn1:hover {
     background: rgb(128,0,128,0.8);
@@ -334,7 +353,7 @@ image {
         position: fixed;
         top: 10px;
         left: 10px;
-        background: var(--primary-color);
+        background: purple;
         color: #fff;
         padding: 10px;
         border-radius: 5px;

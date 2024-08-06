@@ -131,9 +131,24 @@
                 <button class="btn3" onclick="flipVertical()"><i class='bx bx-reflect-vertical'></i></button>
       </div>
             </label> 
-           
-            
 
+
+            <li class="nav-link">
+              <div class="rotate-label">
+                <i class='bx bxs-copy'></i>
+                <button id="tooglebtn3" onclick="unhideLabel3()">Number of Copies</button>
+              </div>
+            </li>
+           
+
+
+            <label class="hide-btn3" id="myLabel3" style="display: none;">
+
+              <input type="number" id="copyCount" min="1" max="50" value="1">
+            
+            <button class="copy-btn" onclick="copyImage()">Copy Image</button>
+            </label>
+            
 
             <li class="nav-link">
               <a href="">
@@ -146,10 +161,31 @@
             <li class="nav-link">
               <a href="">
                 <i class="bx bx-printer icon">
-                  <span onclick="downloadImage()" class="text nav-text">Print Layout</span>
+                  <span   onclick="printImages()" class="text nav-text">Print Layout</span>
                 </i>
+                  <!-- <span onclick="downloadImage()" class="text nav-text">Print Layout</span>
+                </i> -->
               </a>
             </li>
+
+
+            <li class="nav-link">
+              <a href="">
+                <i class='bx bxs-download '></i>
+                  <span  id="tooglebtn3"  onclick="downloadImage()" class="text nav-text">Download</span>
+                </i>
+                  <!-- <span onclick="downloadImage()" class="text nav-text">Print Layout</span>
+                </i> -->
+              </a>
+            </li>
+
+
+
+           
+           
+
+
+
           </ul>
         </div>
       </div>
@@ -258,7 +294,23 @@
     </div>
           </label> 
          
-    
+          <li class="nav-link">
+            <div class="rotate-label">
+              <i class='bx bxs-copy'></i>
+              <button id="tooglebtn3" onclick="unhideLabel3()">Number of Copies</button>
+            </div>
+          </li>
+         
+
+
+          <label class="hide-btn3" id="myLabel3" style="display: none;">
+
+            <input type="number" id="copyCount" min="1" max="50" value="1">
+          
+          <button class="copy-btn" onclick="copyImage()">Copy Image</button>
+          </label>
+
+
           <li class="nav-link">
             <a href="">
               <i class="bx bx-minus-back icon">
@@ -348,9 +400,9 @@
         <!-- <button id="removeBackground" >Remove Background</button>
         <button id="printLayout"></button> -->
 
-        <button onclick="copyImage()">Copy Image</button>
-        <button onclick="downloadImage()">Download</button>
-        <button onclick="printImages()">Print Copies</button>
+       
+       
+       
         <div id="copies" class="copies-container"></div>
       </div>
     </div>
