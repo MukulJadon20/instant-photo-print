@@ -155,6 +155,9 @@ let togglebtn = () => {
   }
 };
 
+
+
+
 function toggleSidebar() {
   const sidebar = document.querySelector(".sidebar");
   sidebar.classList.toggle("open");
@@ -340,3 +343,5 @@ function printImages() {
     printWindow.focus();
     printWindow.print();
 }
+
+

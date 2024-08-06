@@ -348,6 +348,11 @@ image {
         display: none;
     }
 
+    .sidebar.open{
+        display: block;
+
+    }
+
     .menu-btn {
         display: block;
         position: fixed;
@@ -373,6 +378,10 @@ image {
         padding: 1px 8px;
     }
 
+    .sidebar.open {
+        display: block; /* Sidebar is shown when 'open' class is applied */
+    }
+    
     .sidebar .image-text img {
         width: 70px;
         margin-left: 20px;
