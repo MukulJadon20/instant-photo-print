@@ -40,6 +40,7 @@ body {
     margin-left: 100px;
 }
 
+/* ===resuseablecss=== */
 .text-header-text {
     font-size: 14px;
     font-weight: 500;
@@ -53,6 +54,7 @@ body {
     align-items: center;
 }
 
+/* ===sidebar=== */
 .sidebar {
     position: fixed;
     top: 0;
@@ -61,7 +63,7 @@ body {
     width: 250px;
     padding: 1px 14px;
     background: var(--sidebar-color);
-    overflow: scroll;
+    overflow: auto;
     transition: var(--trans-03);
 }
 
@@ -157,6 +159,7 @@ image {
     border: 2px solid black;
 }
 
+/* ===input area=== */
 .icon1 {
     font-size: 100px;
     margin-left: 80px;
@@ -224,7 +227,8 @@ image {
 }
 
 #tooglebtn,
-#tooglebtn1 {
+#tooglebtn1,
+#tooglebtn2 {
     background: #fff;
     font-size: large;
     color: grey;
@@ -238,14 +242,17 @@ image {
 
 .hide-btn {
     padding: 10px;
-    margin-left: 190px;
-    box-sizing: border-box;
-    background-color: var(--body-color);
+    margin-left: 120px;
+   box-sizing: border-box;
+   border: 2px solid rgb(128,0,128);
+   box-shadow: 5px 5px 5px purple;
+   transition: all;
+  
 }
 
 .hide-btn1 {
     padding: 20px;
-    margin-left: 190px;
+    margin-left: 120px;
     background-color: var(--body-color);
 }
 
@@ -256,7 +263,18 @@ image {
 
 .btn1 {
     position: relative;
-    background-color: var(--primary-color);
+    background-color: rgb(128,0,128);
+    font-size: 20px;
+    color: #FFF;
+    display: flex;
+    margin-top: 4px;
+    border-radius: 0.5rem;
+    margin-left: 35px;
+}
+
+.btn2 {
+    position: relative;
+    background-color: rgb(128,0,128);
     font-size: 20px;
     color: #FFF;
     display: flex;
@@ -264,19 +282,40 @@ image {
     border-radius: 0.5rem;
 }
 
+
 .btn1:hover {
-    background: var(--primary-color-light);
+    background: rgb(128,0,128,0.8);
 }
 
+.btn2:hover {
+    background: rgb(128,0,128,0.8);
+}
+
+
 #addText {
-    background: var(--primary-color);
+    background: rgb(128,0,128);
     color: #FFF;
     font-size: 1.2rem;
 }
 
 #addText:hover {
-    background: var(--primary-color-light);
+    background: rgb(128,0,128,0.8);
 }
+
+#menu{
+    color: var(--body-color);
+}
+
+.options{
+    margin-left: 10px;
+    font-size: 1rem;
+}
+
+.btn3{
+    font-size: 2rem;
+    background: purple;
+}
+
 
 /* Responsive Styles */
 @media (max-width: 768px) {
@@ -348,4 +387,39 @@ image {
 /* Show sidebar when menu button is clicked */
 .sidebar.open {
     display: block;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: var(--sidebar-color);
+    z-index: 1000;
 }
+
+
+#myLabel {
+    font-size: 16px;
+    color: black;
+}
+
+
+
+
+
+
+
+#copies {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    overflow: scroll;
+    background: var(--body-color);
+}
+
+.copied-image {
+    margin: 10px;
+    max-width: 100px;
+    max-height: 100px; 
+    background: var(--body-color);
+}
+   

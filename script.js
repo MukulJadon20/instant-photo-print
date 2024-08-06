@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const photoCanvas = document.getElementById("photoCanvas");
   const ctx = photoCanvas.getContext("2d");
 
-
   const brightness = document.getElementById("brightness");
   const contrast = document.getElementById("contrast");
   const grayscale = document.getElementById("grayscale");
@@ -51,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function cropImage(width, height, startX, startY) {
-    let croppedCanvas = document.createElement("canvas");
+    let croppedCanvas = document.createElement("photoCanvas");
     let croppedCtx = croppedCanvas.getContext("2d");
     croppedCanvas.width = width;
     croppedCanvas.height = height;
@@ -134,33 +133,228 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-
 let toggle = () => {
-
   let element = document.getElementById("button");
   let hidden = element.getAttribute("hidden");
 
   if (hidden) {
-     element.removeAttribute("hidden");
+    element.removeAttribute("hidden");
   } else {
-     element.setAttribute("hidden", "hidden");
+    element.setAttribute("hidden", "hidden");
   }
-}
-
+};
 
 let togglebtn = () => {
-
   let element = document.getElementById("button1");
   let hidden = element.getAttribute("hidden");
 
   if (hidden) {
-     element.removeAttribute("hidden");
+    element.removeAttribute("hidden");
   } else {
-     element.setAttribute("hidden", "hidden");
+    element.setAttribute("hidden", "hidden");
+  }
+};
+
+function toggleSidebar() {
+  const sidebar = document.querySelector(".sidebar");
+  sidebar.classList.toggle("open");
+}
+
+function unhideLabel() {
+  var label = document.getElementById("myLabel");
+  if (label.style.display === "none") {
+    label.style.display = "block";
+  } else {
+    label.style.display = "none";
   }
 }
 
-function toggleSidebar() {
-  const sidebar = document.querySelector('.sidebar');
-  sidebar.classList.toggle('open');
+function unhideLabel1() {
+  var label = document.getElementById("myLabel1");
+  if (label.style.display === "none") {
+    label.style.display = "block";
+  } else {
+    label.style.display = "none";
+  }
+}
+
+
+function unhideLabel2() {
+  var label = document.getElementById("myLabel2");
+  if (label.style.display === "none") {
+    label.style.display = "block";
+  } else {
+    label.style.display = "none";
+  }
+}
+
+// ===== ROTATE AND FLIP=====
+
+// const photoCanvas = document.getElementById("photoCanvas");
+// const ctx = photoCanvas.getContext("2d");
+// const upload = document.getElementById("upload");
+
+
+// let img = new Image();
+// let currentRotation = 0;
+// let flippedHorizontal = false;
+// let flippedVertical = false;
+
+// upload.addEventListener("change", (event) => {
+//   const file = event.target.files[0];
+//   if (file) {
+//     const reader = new FileReader();
+//     reader.onload = (e) => {
+//       img.src = e.target.result;
+//       img.onload = () => {
+//         resetTransformations();
+//         drawImage();
+//       };
+//     };
+//     reader.readAsDataURL(file);
+//   }
+// });
+
+// function drawImage() {
+//   photoCanvas.width = img.width;
+//   photoCanvas.height = img.height;
+//   ctx.clearRect(0, 0, photoCanvas.width, photoCanvas.height);
+//   ctx.save();
+//   ctx.translate(photoCanvas.width / 2, photoCanvas.height / 2);
+//   ctx.rotate((currentRotation * Math.PI) / 180);
+//   ctx.scale(flippedHorizontal ? -1 : 1, flippedVertical ? -1 : 1);
+//   ctx.drawImage(img, -img.width / 2, -img.height / 2);
+//   ctx.restore();
+// }
+
+// function resetTransformations() {
+//   currentRotation = 0;
+//   flippedHorizontal = false;
+//   flippedVertical = false;
+// }
+
+// function rotateLeft() {
+//   currentRotation -= 90;
+//   drawImage();
+// }
+
+// function rotateRight() {
+//   currentRotation += 90;
+//   drawImage();
+// }
+
+// function flipHorizontal() {
+//   flippedHorizontal = !flippedHorizontal;
+//   drawImage();
+// }
+
+// function flipVertical() {
+//   flippedVertical = !flippedVertical;
+//   drawImage();
+// }
+
+// function downloadImage() {
+//   const link = document.createElement("a");
+//   link.download = "edited-photo.png";
+//   link.href = photoCanvas.toDataURL();
+//   link.click();
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const canvas = document.getElementById('photoCanvas');
+const ctx = canvas.getContext('2d');
+const upload = document.getElementById('upload');
+const copiesContainer = document.getElementById('copies');
+let img = new Image();
+let currentRotation = 0;
+let flippedHorizontal = false;
+let flippedVertical = false;
+
+upload.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            img.src = e.target.result;
+            img.onload = () => {
+                resetTransformations();
+                drawImage();
+            };
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+function drawImage() {
+    canvas.width = img.width;
+    canvas.height = img.height;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.rotate(currentRotation * Math.PI / 180);
+    ctx.scale(flippedHorizontal ? -1 : 1, flippedVertical ? -1 : 1);
+    ctx.drawImage(img, -img.width / 2, -img.height / 2);
+    ctx.restore();
+}
+
+function resetTransformations() {
+    currentRotation = 0;
+    flippedHorizontal = false;
+    flippedVertical = false;
+}
+
+function rotateLeft() {
+    currentRotation -= 90;
+    drawImage();
+}
+
+function rotateRight() {
+    currentRotation += 90;
+    drawImage();
+}
+
+function flipHorizontal() {
+    flippedHorizontal = !flippedHorizontal;
+    drawImage();
+}
+
+function flipVertical() {
+    flippedVertical = !flippedVertical;
+    drawImage();
+}
+
+function copyImage() {
+    const copy = new Image();
+    copy.src = canvas.toDataURL();
+    copy.className = 'copied-image';
+    copiesContainer.appendChild(copy);
+}
+
+function printImages() {
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write('<html><head><title>Print Copies</title></head><body>');
+    copiesContainer.querySelectorAll('img').forEach(img => {
+        printWindow.document.write(`<img src="${img.src}" style="margin: 10px; max-width: 100px; max-height: 100px; border: 1px solid #ccc;">`);
+    });
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.print();
 }
