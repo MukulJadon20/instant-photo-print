@@ -250,6 +250,7 @@ image {
     border: 2px solid rgb(128, 0, 128);
     box-shadow: 5px 5px 5px purple;
     transition: all;
+    margin-top: 20px;
 
 }
 

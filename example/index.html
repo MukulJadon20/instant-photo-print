@@ -6,11 +6,16 @@
     <title>Instant Photo Print</title>
     <link rel="stylesheet" href="style.css" />
 
+    <!-- Croppie CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.6/croppie.min.css" />
+
+
     <!-- Boxicons CSS -->
     <link
       href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
       rel="stylesheet"
     />
+   
   </head>
   <body>
     <div class="menu-btn" id="menuBtn" onclick="toggleSidebar()">
@@ -196,24 +201,28 @@
       </header>
     </div>
 
-    <label class="photo-editor">
+    <div class="photo-editor">
       <div class="container">
         <i class="bx bxs-file-image icon">
-          <input type="file" id="upload" accept="image/*" />
+         <input type="file" id="upload" />
         </i>
         <div class="img-area">
           <i class="bx bx-cloud-upload icon1"></i>
           <h3>Upload Image</h3>
           <canvas id="photoCanvas" width="0" height="0"></canvas>
+          <img id="image" />
         </div>
-      </div>
-    </label>
+        <br />
+     <!-- Croppie Container -->
+<div id="croppie-container" >
+  <div id="croppie"></div>
+  <button id="crop-btn">Crop</button>
+</div>
 
-    <label class="hide-btn1" id="myLabel" style="display: none">
-      <input class="btn1" type="submit" value="Custom Crop" id="customCrop">
 
-    
-    </label>
+
+      <!-- Existing labels and controls -->
+    </div>
 
     <label class="hide-btn" id="myLabel1" style="display: none">
       <div class="label-textName">
@@ -223,12 +232,20 @@
       </div>
     </label>
 
+
+    
+<label class="hide-btn1" id="myLabel"  style="display: none;">
+  <input class="btn1" type="submit" value="Crop Image" id="cropPassport">
+  <input  class="btn2" type="submit" value="Crop Custom Image"id="cropCustom">
+</label>
+
     <div class="controls">
       <div id="copies" class="copies-container"></div>
     </div>
 
-    <script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
-
+    <!-- Croppie JS -->
+     <!-- Croppie CSS -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
     <script src="script.js"></script>
   </body>
 </html>

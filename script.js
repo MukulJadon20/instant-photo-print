@@ -16,9 +16,9 @@ document.addEventListener("DOMContentLoaded", () => {
     .getElementById("cropPassport")
     .addEventListener("click", cropToRatio);
 
-  // =====CROP RATIO=====
+   // =====CROP RATIO=====
 
-  function cropToRatio() {
+   function cropToRatio() {
     let targetRatio = 3 / 4;
     let imgRatio = image.width / image.height;
     let cropWidth, cropHeight;
@@ -37,8 +37,8 @@ document.addEventListener("DOMContentLoaded", () => {
     cropImage(cropWidth, cropHeight, cropX, cropY);
   }
 
-  // ====custom Crop====
 
+  // ====custom Crop====
   function cropCustomSize() {
     let customWidth = parseInt(prompt("Enter custom width in pixels:", "300"));
     let customHeight = parseInt(
@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function cropImage(width, height, startX, startY) {
-    let croppedCanvas = document.createElement("photoCanvas");
+    let croppedCanvas = document.createElement("canvas");
     let croppedCtx = croppedCanvas.getContext("2d");
     croppedCanvas.width = width;
     croppedCanvas.height = height;
@@ -68,7 +68,9 @@ document.addEventListener("DOMContentLoaded", () => {
     photoCanvas.width = width;
     photoCanvas.height = height;
     ctx.drawImage(croppedCanvas, 0, 0);
+    image.src = croppedCanvas.toDataURL(); // Update the original image with the cropped one
   }
+
 
   let image = new Image();
   let rotate = 0,
