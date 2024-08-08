@@ -63,7 +63,7 @@ body {
     width: 250px;
     padding: 1px 14px;
     background: var(--sidebar-color);
-    overflow: auto;
+    overflow:auto ;
     transition: var(--trans-03);
 }
 
@@ -461,3 +461,28 @@ image {
 .button2,.button3,.button4,.button5,.button6,.button7,.button8{
     cursor: pointer;
 }
+
+#brightness,#contrast,#grayscale,#saturation,#sharpness,#redeye,#colorBalance{
+    accent-color: purple;
+}
+
+
+::-webkit-scrollbar{
+    width: 15px;
+
+}
+
+::-webkit-scrollbar-track{
+    background: #d1e5ff;
+
+}
+
+::-webkit-scrollbar-thumb{
+    background: linear-gradient(#642bff,#ff22e6);
+    border-radius: 10px;
+}
+
+h3{
+    color: purple;
+}
+
