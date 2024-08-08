@@ -16,9 +16,9 @@ document.addEventListener("DOMContentLoaded", () => {
     .getElementById("cropPassport")
     .addEventListener("click", cropToRatio);
 
-   // =====CROP RATIO=====
+  // =====CROP RATIO=====
 
-   function cropToRatio() {
+  function cropToRatio() {
     let targetRatio = 3 / 4;
     let imgRatio = image.width / image.height;
     let cropWidth, cropHeight;
@@ -36,7 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     cropImage(cropWidth, cropHeight, cropX, cropY);
   }
-
 
   // ====custom Crop====
   function cropCustomSize() {
@@ -70,7 +69,6 @@ document.addEventListener("DOMContentLoaded", () => {
     ctx.drawImage(croppedCanvas, 0, 0);
     image.src = croppedCanvas.toDataURL(); // Update the original image with the cropped one
   }
-
 
   let image = new Image();
   let rotate = 0,
@@ -130,15 +128,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Draw white strip
     ctx.fillStyle = "white";
-    ctx.fillRect(0, photoCanvas.height - 60, photoCanvas.width-50, 100);
+    ctx.fillRect(0, photoCanvas.height - 60, photoCanvas.width - 50, 100);
 
     // Draw text
     ctx.font = "bold 40px Arial";
     ctx.fillStyle = "black";
     ctx.fillText(name, 300, photoCanvas.height - 30);
-    ctx.fillText(date, 300, photoCanvas.height );
+    ctx.fillText(date, 300, photoCanvas.height);
   });
-
 });
 
 let toggle = () => {
@@ -203,7 +200,6 @@ function unhideLabel3() {
     label.style.display = "none";
   }
 }
-
 
 function unhideLabel4() {
   var label = document.getElementById("myLabel4");
@@ -356,3 +352,72 @@ function printImages() {
   printWindow.focus();
   printWindow.print();
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const upload = document.getElementById("upload");
+  const photoCanvas = document.getElementById("photoCanvas");
+  const ctx = photoCanvas.getContext("2d");
+
+  const saturation = document.getElementById("saturation");
+  const sharpness = document.getElementById("sharpness");
+  const redeye = document.getElementById("redeye");
+  const colorBalance = document.getElementById("colorBalance");
+
+  let image = new Image();
+
+  upload.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      image.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  image.onload = () => {
+    photoCanvas.width = image.width;
+    photoCanvas.height = image.height;
+    applyFilters();
+  };
+
+  const applyFilters = () => {
+    ctx.clearRect(0, 0, photoCanvas.width, photoCanvas.height);
+    ctx.filter = `
+      saturate(${saturation.value}%)
+      brightness(${100 + parseInt(sharpness.value)}%)
+      contrast(${100 + parseInt(colorBalance.value)}%)
+  `;
+    ctx.drawImage(image, 0, 0);
+
+    // Apply Red-Eye Reduction (simulated by decreasing red channel intensity)
+    if (parseInt(redeye.value) > 0) {
+      const imageData = ctx.getImageData(
+        0,
+        0,
+        photoCanvas.width,
+        photoCanvas.height
+      );
+      const data = imageData.data;
+      for (let i = 0; i < data.length; i += 4) {
+        data[i] = data[i] - parseInt(redeye.value); // Red channel
+      }
+      ctx.putImageData(imageData, 0, 0);
+    }
+
+    updateLabels();
+  };
+
+  const updateLabels = () => {
+    document.getElementById("saturationValue").textContent = saturation.value;
+    document.getElementById("sharpnessValue").textContent = sharpness.value;
+    document.getElementById("redeyeValue").textContent = redeye.value;
+    document.getElementById("colorBalanceValue").textContent =
+      colorBalance.value;
+  };
+
+  saturation.addEventListener("input", applyFilters);
+  sharpness.addEventListener("input", applyFilters);
+  redeye.addEventListener("input", applyFilters);
+  colorBalance.addEventListener("input", applyFilters);
+});
