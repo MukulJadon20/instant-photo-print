@@ -1,69 +1,130 @@
-const canvas = document.getElementById('photoCanvas');
-const ctx = canvas.getContext('2d');
-const upload = document.getElementById('upload');
-const copiesContainer = document.getElementById('copies');
-const copyCountInput = document.getElementById('copyCount');
-let img = new Image();
-
-upload.addEventListener('change', (event) => {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            img.src = e.target.result;
-            img.onload = () => {
-                canvas.width = img.width;
-                canvas.height = img.height;
-                ctx.drawImage(img, 0, 0);
-            };
+document.addEventListener("DOMContentLoaded", () => {
+    const upload = document.getElementById("upload");
+    const photoCanvas = document.getElementById("photoCanvas");
+    const ctx = photoCanvas.getContext("2d");
+  
+    let cropper;
+  
+    upload.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+  
+      reader.onload = (event) => {
+        const imgElement = document.createElement("img");
+        imgElement.src = event.target.result;
+  
+        imgElement.onload = () => {
+          if (cropper) cropper.destroy(); // Destroy previous cropper instance
+          photoCanvas.width = imgElement.width;
+          photoCanvas.height = imgElement.height;
+          ctx.drawImage(imgElement, 0, 0);
+  
+          cropper = new Cropper(imgElement, {
+            viewMode: 1,
+            aspectRatio: NaN, // Free ratio
+            autoCropArea: 1,
+          });
+  
+          document.querySelector(".img-area").appendChild(imgElement);
         };
-        reader.readAsDataURL(file);
-    }
-});
+      };
+      reader.readAsDataURL(file);
+    });
+  
+    // Custom crop functionality
+    document.getElementById("customCrop").addEventListener("click", () => {
+      const croppedImage = cropper.getCroppedCanvas();
+      photoCanvas.width = croppedImage.width;
+      photoCanvas.height = croppedImage.height;
+      ctx.clearRect(0, 0, photoCanvas.width, photoCanvas.height);
+      ctx.drawImage(croppedImage, 0, 0);
+  
+      // Reapply filters if any
+      applyFilters();
+    });
+  
+    const brightness = document.getElementById("brightness");
+    const contrast = document.getElementById("contrast");
+    const grayscale = document.getElementById("grayscale");
+  
+    const applyFilters = () => {
+      ctx.clearRect(0, 0, photoCanvas.width, photoCanvas.height);
+      ctx.filter = `
+              brightness(${brightness.value}%)
+              contrast(${contrast.value}%)
+              grayscale(${grayscale.value}%)
+          `;
+      ctx.drawImage(cropper.getCroppedCanvas(), 0, 0);
+    };
+  
+    brightness.addEventListener("input", applyFilters);
+    contrast.addEventListener("input", applyFilters);
+    grayscale.addEventListener("input", applyFilters);
+  
+    // Add text functionality with a white strip
+    document.getElementById("addText").addEventListener("click", () => {
+      let name = document.getElementById("nameInput").value;
+      let date = document.getElementById("dateInput").value;
+  
+      // Draw white strip
+      ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
+      ctx.fillRect(0, photoCanvas.height - 60, photoCanvas.width, 50);
+  
+      // Draw text
+      ctx.font = "bold 40px Arial";
+      ctx.fillStyle = "black";
+      ctx.fillText(name, 10, photoCanvas.height - 20);
+      ctx.fillText(date, photoCanvas.width - 200, photoCanvas.height - 20);
+    });
+  
+    // Rotate, flip, and other functions remain the same...
+  });
+  
+  
 
-function copyImage() {
-    const copyCount = parseInt(copyCountInput.value);
-    if (img.src && copyCount > 0) {
-        copiesContainer.innerHTML = ''; // Clear previous copies
-        for (let i = 0; i < copyCount; i++) {
-            const copiedImg = new Image();
-            copiedImg.src = canvas.toDataURL();
-            copiedImg.classList.add('copied-image');
-            copiesContainer.appendChild(copiedImg);
-        }
+  function unhideLabel() {
+    var label = document.getElementById("myLabel");
+    if (label.style.display === "none") {
+      label.style.display = "block";
     } else {
-        alert('Please upload an image and specify a valid number of copies.');
+      label.style.display = "none";
     }
-}
-
-function printImages() {
-    if (copiesContainer.children.length === 0) {
-        alert('No images to print.');
-        return;
+  }
+  
+  function unhideLabel1() {
+    var label = document.getElementById("myLabel1");
+    if (label.style.display === "none") {
+      label.style.display = "block";
+    } else {
+      label.style.display = "none";
     }
-
-    const printWindow = window.open('', '', 'height=600,width=800');
-    const styles = `
-        <style>
-            body { margin: 0; padding: 20px; }
-            .print-container { display: flex; flex-wrap: wrap; }
-            .copied-image { margin: 10px; border: 1px solid #ccc; max-width: 100px; max-height: 100px; }
-        </style>
-    `;
-    const content = `
-        <html>
-        <head>
-            ${styles}
-        </head>
-        <body>
-            <div class="print-container">
-                ${Array.from(copiesContainer.children).map(child => `<img src="${child.src}" class="copied-image">`).join('')}
-            </div>
-        </body>
-        </html>
-    `;
-    printWindow.document.write(content);
-    printWindow.document.close();
-    printWindow.focus();
-    printWindow.print();
-}
+  }
+  
+  function unhideLabel2() {
+    var label = document.getElementById("myLabel2");
+    if (label.style.display === "none") {
+      label.style.display = "block";
+    } else {
+      label.style.display = "none";
+    }
+  }
+  
+  function unhideLabel3() {
+    var label = document.getElementById("myLabel3");
+    if (label.style.display === "none") {
+      label.style.display = "block";
+    } else {
+      label.style.display = "none";
+    }
+  }
+  
+  
+  function unhideLabel4() {
+    var label = document.getElementById("myLabel4");
+    if (label.style.display === "none") {
+      label.style.display = "block";
+    } else {
+      label.style.display = "none";
+    }
+  }
+  

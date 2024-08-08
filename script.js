@@ -125,12 +125,18 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("addText").addEventListener("click", () => {
     let name = document.getElementById("nameInput").value;
     let date = document.getElementById("dateInput").value;
-    ctx.drawImage(image, 0, 0);
-    ctx.font = "40px Arial";
+
+    // Draw white strip
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, photoCanvas.height - 60, photoCanvas.width-50, 100);
+
+    // Draw text
+    ctx.font = "bold 40px Arial";
     ctx.fillStyle = "black";
-    ctx.fillText(name, 10, photoCanvas.height - 30);
-    ctx.fillText(date, 10, photoCanvas.height - 10);
+    ctx.fillText(name, 300, photoCanvas.height - 30);
+    ctx.fillText(date, 300, photoCanvas.height );
   });
+
 });
 
 let toggle = () => {
