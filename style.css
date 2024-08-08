@@ -229,7 +229,8 @@ image {
 #tooglebtn,
 #tooglebtn1,
 #tooglebtn2,
-#tooglebtn3 {
+#tooglebtn3,
+#tooglebtn4 {
     background: #fff;
     font-size: large;
     color: grey;
@@ -245,11 +246,11 @@ image {
 .hide-btn {
     padding: 10px;
     margin-left: 120px;
-   box-sizing: border-box;
-   border: 2px solid rgb(128,0,128);
-   box-shadow: 5px 5px 5px purple;
-   transition: all;
-  
+    box-sizing: border-box;
+    border: 2px solid rgb(128, 0, 128);
+    box-shadow: 5px 5px 5px purple;
+    transition: all;
+
 }
 
 .hide-btn1 {
@@ -265,7 +266,7 @@ image {
 
 .btn1 {
     position: relative;
-    background-color: rgb(128,0,128);
+    background-color: rgb(128, 0, 128);
     font-size: 20px;
     color: #FFF;
     display: flex;
@@ -276,7 +277,7 @@ image {
 
 .btn2 {
     position: relative;
-    background-color: rgb(128,0,128);
+    background-color: rgb(128, 0, 128);
     font-size: 20px;
     color: #FFF;
     display: flex;
@@ -284,18 +285,18 @@ image {
     border-radius: 0.5rem;
 }
 
-#myLabel3{
+#myLabel3 {
     margin-left: 50px;
 }
 
-#copyCount{
+#copyCount {
     margin-left: 8px;
     border-radius: 5px;
     font-size: 15px;
 }
 
-.copy-btn{
-    background-color: rgb(128,0,128);
+.copy-btn {
+    background-color: rgb(128, 0, 128);
     border-radius: 0.5rem;
     font-size: 15px;
     display: flex;
@@ -303,34 +304,34 @@ image {
 }
 
 .btn1:hover {
-    background: rgb(128,0,128,0.8);
+    background: rgb(128, 0, 128, 0.8);
 }
 
 .btn2:hover {
-    background: rgb(128,0,128,0.8);
+    background: rgb(128, 0, 128, 0.8);
 }
 
 
 #addText {
-    background: rgb(128,0,128);
+    background: rgb(128, 0, 128);
     color: #FFF;
     font-size: 1.2rem;
 }
 
 #addText:hover {
-    background: rgb(128,0,128,0.8);
+    background: rgb(128, 0, 128, 0.8);
 }
 
-#menu{
+#menu {
     color: var(--body-color);
 }
 
-.options{
+.options {
     margin-left: 10px;
     font-size: 1rem;
 }
 
-.btn3{
+.btn3 {
     font-size: 2rem;
     background: purple;
 }
@@ -348,7 +349,7 @@ image {
         display: none;
     }
 
-    .sidebar.open{
+    .sidebar.open {
         display: block;
 
     }
@@ -379,9 +380,10 @@ image {
     }
 
     .sidebar.open {
-        display: block; /* Sidebar is shown when 'open' class is applied */
+        display: block;
+        /* Sidebar is shown when 'open' class is applied */
     }
-    
+
     .sidebar .image-text img {
         width: 70px;
         margin-left: 20px;
@@ -447,7 +449,6 @@ image {
 .copied-image {
     margin: 10px;
     max-width: 100px;
-    max-height: 100px; 
+    max-height: 100px;
     background: var(--body-color);
 }
-   

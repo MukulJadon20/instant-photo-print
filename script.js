@@ -155,9 +155,6 @@ let togglebtn = () => {
   }
 };
 
-
-
-
 function toggleSidebar() {
   const sidebar = document.querySelector(".sidebar");
   sidebar.classList.toggle("open");
@@ -181,7 +178,6 @@ function unhideLabel1() {
   }
 }
 
-
 function unhideLabel2() {
   var label = document.getElementById("myLabel2");
   if (label.style.display === "none") {
@@ -191,9 +187,18 @@ function unhideLabel2() {
   }
 }
 
-
 function unhideLabel3() {
   var label = document.getElementById("myLabel3");
+  if (label.style.display === "none") {
+    label.style.display = "block";
+  } else {
+    label.style.display = "none";
+  }
+}
+
+
+function unhideLabel4() {
+  var label = document.getElementById("myLabel4");
   if (label.style.display === "none") {
     label.style.display = "block";
   } else {
@@ -206,10 +211,9 @@ function unhideLabel3() {
 const photoCanvas = document.getElementById("photoCanvas");
 const ctx = photoCanvas.getContext("2d");
 const upload = document.getElementById("upload");
-const canvas = document.getElementById('photoCanvas');
-const copiesContainer = document.getElementById('copies');
-const copyCountInput = document.getElementById('copyCount');
-
+const canvas = document.getElementById("photoCanvas");
+const copiesContainer = document.getElementById("copies");
+const copyCountInput = document.getElementById("copyCount");
 
 let img = new Image();
 let currentRotation = 0;
@@ -276,72 +280,71 @@ function downloadImage() {
   link.click();
 }
 
-
-
 // ======COPY AND PRINT IMAGES=====
 
-
-upload.addEventListener('change', (event) => {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            img.src = e.target.result;
-            img.onload = () => {
-                canvas.width = img.width;
-                canvas.height = img.height;
-                ctx.drawImage(img, 0, 0);
-            };
-        };
-        reader.readAsDataURL(file);
-    }
+upload.addEventListener("change", (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      img.src = e.target.result;
+      img.onload = () => {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+      };
+    };
+    reader.readAsDataURL(file);
+  }
 });
 
 function copyImage() {
-    const copyCount = parseInt(copyCountInput.value);
-    if (img.src && copyCount > 0) {
-        copiesContainer.innerHTML = ''; // Clear previous copies
-        for (let i = 0; i < copyCount; i++) {
-            const copiedImg = new Image();
-            copiedImg.src = canvas.toDataURL();
-            copiedImg.classList.add('copied-image');
-            copiesContainer.appendChild(copiedImg);
-        }
-    } else {
-        alert('Please upload an image and specify a valid number of copies.');
+  const copyCount = parseInt(copyCountInput.value);
+  if (img.src && copyCount > 0) {
+    copiesContainer.innerHTML = ""; // Clear previous copies
+    for (let i = 0; i < copyCount; i++) {
+      const copiedImg = new Image();
+      copiedImg.src = canvas.toDataURL();
+      copiedImg.classList.add("copied-image");
+      copiesContainer.appendChild(copiedImg);
     }
+  } else {
+    alert("Please upload an image and specify a valid number of copies.");
+  }
 }
 
 function printImages() {
-    if (copiesContainer.children.length === 0) {
-        alert('No images to print.');
-        return;
-    }
+  if (copiesContainer.children.length === 0) {
+    alert("No images to print.");
+    return;
+  }
 
-    const printWindow = window.open('', '', 'height=600,width=800');
-    const styles = `
+  const printWindow = window.open("", "", "height=600,width=800");
+  const styles = `
         <style>
             body { margin: 0; padding: 20px; }
             .print-container { display: flex; flex-wrap: wrap; }
             .copied-image { margin: 10px; border: 1px solid #ccc; max-width: 100px; max-height: 100px; }
         </style>
     `;
-    const content = `
+  const content = `
         <html>
         <head>
             ${styles}
         </head>
         <body>
             <div class="print-container">
-                ${Array.from(copiesContainer.children).map(child => `<img src="${child.src}" class="copied-image">`).join('')}
+                ${Array.from(copiesContainer.children)
+                  .map(
+                    (child) => `<img src="${child.src}" class="copied-image">`
+                  )
+                  .join("")}
             </div>
         </body>
         </html>
     `;
-    printWindow.document.write(content);
-    printWindow.document.close();
-    printWindow.focus();
-    printWindow.print();
+  printWindow.document.write(content);
+  printWindow.document.close();
+  printWindow.focus();
+  printWindow.print();
 }
-
-
