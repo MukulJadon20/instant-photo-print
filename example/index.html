@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instant Photo Print</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+    <style>
+      body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    text-align: center;
+}
+
+.canvas-container {
+    position: relative;
+}
+
+#canvas {
+    border: 1px solid #ccc;
+    margin-top: 20px;
+}
+
+.controls {
+    margin-top: 20px;
+}
+
+.controls button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 10px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Instant Photo Print</h1>
+        <input type="file" id="upload" accept="image/*">
+        <div class="canvas-container">
+            <img id="image" style="display:none;">
+            <canvas id="canvas"></canvas>
+        </div>
+        <div class="controls">
+            <button id="cropButton">Crop Image</button>
+            <button id="confirmCrop" style="display:none;">Confirm Crop</button>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
+

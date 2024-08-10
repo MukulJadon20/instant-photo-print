@@ -6,6 +6,11 @@
     <title>Instant Photo Print</title>
     <link rel="stylesheet" href="style.css" />
 
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css"
+    />
+
     <!-- Boxicons CSS -->
     <link
       href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
@@ -220,20 +225,13 @@
 
             <li class="nav-link">
               <a href="">
-                <i class='bx bxs-download '></i>
-                  <span class="button8" id="tooglebtn3"  onclick="downloadImage()" class="text nav-text">Download</span>
+                <i class='bx bxs-download icon '>
+                  <span   onclick="downloadImage()" class="text nav-text">Download</span>
                 </i>
-                  <!-- <span onclick="downloadImage()" class="text nav-text">Print Layout</span>
-                </i> -->
+                 
+                
               </a>
             </li>
-
-
-
-           
-           
-
-
 
           </ul>
         </div>
@@ -388,6 +386,17 @@
         </ul>
       </div>
     </div>
+
+    <li class="nav-link">
+      <a href="">
+        <i class='bx bxs-download icon '>
+          <span   onclick="downloadImage()" class="text nav-text">Download</span>
+        </i>
+         
+        
+      </a>
+    </li>
+
     <!-- More sidebar items here -->
 </ul>
 </div>
@@ -413,6 +422,8 @@
       </div>
 
 
+      
+     
 
 
 
@@ -447,8 +458,13 @@
 
 
     <label class="hide-btn1" id="myLabel"  style="display: none;">
-      <input class="btn1" type="submit" value="Crop Image" id="cropPassport">
-      <input  class="btn2" type="submit" value="Crop Custom Image"id="cropCustom">
+      <!-- <input class="btn1" type="submit" value="Crop Image" id="cropPassport">
+      <input  class="btn2" type="submit" value="Crop Custom Image"id="cropCustom"> -->
+      <div class="canvas-container">
+        <img id="image" style="display:none;">
+        <!-- <canvas id="photoCanvas"></canvas> -->
+    </div>
+      <button id="cropButton">Crop Image</button>
     </label>
     
      
@@ -466,6 +482,7 @@
       </div>
     </div>
     <!-- </div> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
     <script src="script.js"></script>
   </body>
 </html>

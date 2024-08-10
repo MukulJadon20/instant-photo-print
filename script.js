@@ -74,10 +74,10 @@ document.addEventListener("DOMContentLoaded", () => {
     image.src = croppedCanvas.toDataURL(); // Update the original image with the cropped one
   }
 
-  let image = new Image();
-  let rotate = 0,
-    flipHorizontal = 1,
-    flipVertical = 1;
+  // let image = new Image();
+  // let rotate = 0,
+  //   flipHorizontal = 1,
+  //   flipVertical = 1;
 
   upload.addEventListener("change", (e) => {
     const file = e.target.files[0];
@@ -237,127 +237,130 @@ function unhideLabel4() {
 }
 
 // ===== ROTATE AND FLIP=====
-
 const photoCanvas = document.getElementById("photoCanvas");
 const ctx = photoCanvas.getContext("2d");
 const upload = document.getElementById("upload");
-const canvas = document.getElementById("photoCanvas");
 const copiesContainer = document.getElementById("copies");
 const copyCountInput = document.getElementById("copyCount");
+const cropButton = document.getElementById("cropButton");
+const image = document.getElementById("image");
 
-let img = new Image();
+let cropper;
 let currentRotation = 0;
 let flippedHorizontal = false;
 let flippedVertical = false;
 
 upload.addEventListener("change", (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      img.src = e.target.result;
-      img.onload = () => {
-        resetTransformations();
-        drawImage();
-      };
-    };
-    reader.readAsDataURL(file);
-  }
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            image.src = e.target.result;
+            image.style.display = 'block';
+            image.onload = () => {
+                if (cropper) {
+                    cropper.destroy();
+                }
+                cropper = new Cropper(image, {
+                    aspectRatio: NaN,
+                    viewMode: 1,
+                });
+                resetTransformations();
+                drawImage();
+            };
+        };
+        reader.readAsDataURL(file);
+    }
 });
 
 function drawImage() {
-  photoCanvas.width = img.width;
-  photoCanvas.height = img.height;
-  ctx.clearRect(0, 0, photoCanvas.width, photoCanvas.height);
-  ctx.save();
-  ctx.translate(photoCanvas.width / 2, photoCanvas.height / 2);
-  ctx.rotate((currentRotation * Math.PI) / 180);
-  ctx.scale(flippedHorizontal ? -1 : 1, flippedVertical ? -1 : 1);
-  ctx.drawImage(img, -img.width / 2, -img.height / 2);
-  ctx.restore();
+    photoCanvas.width = image.width;
+    photoCanvas.height = image.height;
+    ctx.clearRect(0, 0, photoCanvas.width, photoCanvas.height);
+    ctx.save();
+    ctx.translate(photoCanvas.width / 2, photoCanvas.height / 2);
+    ctx.rotate((currentRotation * Math.PI) / 180);
+    ctx.scale(flippedHorizontal ? -1 : 1, flippedVertical ? -1 : 1);
+    ctx.drawImage(image, -image.width / 2, -image.height / 2);
+    ctx.restore();
+    photoCanvas.style.display = 'block';
 }
 
 function resetTransformations() {
-  currentRotation = 0;
-  flippedHorizontal = false;
-  flippedVertical = false;
+    currentRotation = 0;
+    flippedHorizontal = false;
+    flippedVertical = false;
 }
 
 function rotateLeft() {
-  currentRotation -= 90;
-  drawImage();
+    currentRotation -= 90;
+    drawImage();
 }
 
 function rotateRight() {
-  currentRotation += 90;
-  drawImage();
+    currentRotation += 90;
+    drawImage();
 }
 
 function flipHorizontal() {
-  flippedHorizontal = !flippedHorizontal;
-  drawImage();
+    flippedHorizontal = !flippedHorizontal;
+    drawImage();
 }
 
 function flipVertical() {
-  flippedVertical = !flippedVertical;
-  drawImage();
+    flippedVertical = !flippedVertical;
+    drawImage();
 }
 
 function downloadImage() {
-  const link = document.createElement("a");
-  link.download = "edited-photo.png";
-  link.href = photoCanvas.toDataURL();
-  link.click();
+    const link = document.createElement("a");
+    link.download = "edited-photo.png";
+    link.href = photoCanvas.toDataURL();
+    link.click();
 }
 
-// ======COPY AND PRINT IMAGES=====
-
-upload.addEventListener("change", (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      img.src = e.target.result;
-      img.onload = () => {
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0);
-      };
-    };
-    reader.readAsDataURL(file);
-  }
+cropButton.addEventListener('click', () => {
+    if (cropper) {
+        const croppedCanvas = cropper.getCroppedCanvas();
+        photoCanvas.width = croppedCanvas.width;
+        photoCanvas.height = croppedCanvas.height;
+        ctx.drawImage(croppedCanvas, 0, 0);
+        photoCanvas.style.display = 'block';
+        image.style.display = 'block';
+        cropper.destroy();
+    }
 });
 
 function copyImage() {
-  const copyCount = parseInt(copyCountInput.value);
-  if (img.src && copyCount > 0) {
-    copiesContainer.innerHTML = ""; // Clear previous copies
-    for (let i = 0; i < copyCount; i++) {
-      const copiedImg = new Image();
-      copiedImg.src = canvas.toDataURL();
-      copiedImg.classList.add("copied-image");
-      copiesContainer.appendChild(copiedImg);
+    const copyCount = parseInt(copyCountInput.value);
+    if (image.src && copyCount > 0) {
+        copiesContainer.innerHTML = ""; // Clear previous copies
+        for (let i = 0; i < copyCount; i++) {
+            const copiedImg = new Image();
+            copiedImg.src = photoCanvas.toDataURL();
+            copiedImg.classList.add("copied-image");
+            copiesContainer.appendChild(copiedImg);
+        }
+    } else {
+        alert("Please upload an image and specify a valid number of copies.");
     }
-  } else {
-    alert("Please upload an image and specify a valid number of copies.");
-  }
 }
 
 function printImages() {
-  if (copiesContainer.children.length === 0) {
-    alert("No images to print.");
-    return;
-  }
+    if (copiesContainer.children.length === 0) {
+        alert("No images to print.");
+        return;
+    }
 
-  const printWindow = window.open("", "", "height=600,width=800");
-  const styles = `
+    const printWindow = window.open("", "", "height=600,width=800");
+    const styles = `
         <style>
             body { margin: 0; padding: 20px; }
             .print-container { display: flex; flex-wrap: wrap; }
             .copied-image { margin: 10px; border: 1px solid #ccc; max-width: 100px; max-height: 100px; }
         </style>
     `;
-  const content = `
+    const content = `
         <html>
         <head>
             ${styles}
@@ -373,10 +376,8 @@ function printImages() {
         </body>
         </html>
     `;
-  printWindow.document.write(content);
-  printWindow.document.close();
-  printWindow.focus();
-  printWindow.print();
+    printWindow.document.write(content);
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
 }
-
-
