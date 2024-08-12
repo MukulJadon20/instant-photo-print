@@ -56,10 +56,10 @@ body {
     align-items: center;
 }
 
-#image{
+/* #image{
     height:350px;
     width: 350px;
-}
+} */
 /* ===sidebar=== */
 .sidebar {
     position: fixed;
@@ -238,7 +238,8 @@ image {
 #tooglebtn1,
 #tooglebtn2,
 #tooglebtn3,
-#tooglebtn4 {
+#tooglebtn4,
+#tooglebtn5 {
     background: #fff;
     font-size: large;
     color: grey;
@@ -311,6 +312,18 @@ image {
     display: flex;
     margin-top: 10px;
 }
+
+#removeBgButton,#applyBgColor{
+    background-color: rgb(128, 0, 128);
+    border-radius: 0.5rem;
+    font-size: 15px;
+    display: flex;
+}
+
+#removeBgButton:hover,#applyBgColor:hover{
+    background: rgb(128, 0, 128, 0.8);
+}
+
 
 .btn1:hover {
     background: rgb(128, 0, 128, 0.8);

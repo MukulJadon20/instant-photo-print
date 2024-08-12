@@ -183,12 +183,21 @@
             </li>
 
 
+            <li class="nav-link">
+              <div class="copies-label">
+                <i class="bx bx-minus-back icon">
+                  <button class="button8" id="tooglebtn5" onclick="unhideLabel5()">Min Background</button>
+                </i>
+               
+              </div>
+            </li>
+
 
 
 
 
             <li class="nav-link">
-              <div class="rotate-label">
+              <div class="copies-label">
                 <i class='bx bxs-copy'></i>
                 <button class="button6" id="tooglebtn3" onclick="unhideLabel3()">Number of Copies</button>
               </div>
@@ -204,13 +213,14 @@
             </label>
             
 
-            <li class="nav-link">
+            <!-- <li class="nav-link">
               <a href="">
                 <i class="bx bx-minus-back icon">
                   <span class="text nav-text">Min Background</span>
                 </i>
               </a>
-            </li>
+            </li> -->
+
       
             <li class="nav-link">
               <a href="">
@@ -350,6 +360,15 @@
               <button class="btn3" onclick="flipVertical()"><i class='bx bx-reflect-vertical'></i></button>
     </div>
           </label> 
+
+          <li class="nav-link">
+            <div class="copies-label">
+              <i class="bx bx-minus-back icon">
+                <button class="button6" id="tooglebtn5" onclick="unhideLabel5()">Min Background</button>
+              </i>
+             
+            </div>
+          </li>
          
           <li class="nav-link">
             <div class="rotate-label">
@@ -368,13 +387,7 @@
           </label>
 
 
-          <li class="nav-link">
-            <a href="">
-              <i class="bx bx-minus-back icon">
-                <span class="text nav-text">Min Background</span>
-              </i>
-            </a>
-          </li>
+         
     
           <li class="nav-link">
             <a href="">
@@ -415,7 +428,10 @@
           <div class="img-area">
               <i class='bx bx-cloud-upload icon1'></i> 
                <h3>Upload Image</h3> 
-              <canvas id="photoCanvas" width="0" height="0" ></canvas>
+               <div class="canvas-container">
+                <img id="image" style="display:none;">
+                <canvas id="photoCanvas" width="0" height="o"></canvas>
+            </div>
           </div>
           <br>
           <!-- <button class="select-image">Select Image</button> -->
@@ -460,11 +476,12 @@
     <label class="hide-btn1" id="myLabel"  style="display: none;">
       <!-- <input class="btn1" type="submit" value="Crop Image" id="cropPassport">
       <input  class="btn2" type="submit" value="Crop Custom Image"id="cropCustom"> -->
-      <div class="canvas-container">
+      <!-- <div class="canvas-container">
         <img id="image" style="display:none;">
-        <!-- <canvas id="photoCanvas"></canvas> -->
-    </div>
-      <button id="cropButton">Crop Image</button>
+    
+    </div> -->
+      <button class="btn1" id="cropButton">Crop Image</button>
+      <button class="btn1" id="confirmCrop" style="display:none;">Confirm Crop</button>
     </label>
     
      
@@ -475,6 +492,17 @@
         <!-- <button id="removeBackground" >Remove Background</button>
         <button id="printLayout"></button> -->
 
+        
+        <label class="hide-btn5" id="myLabel5" style="display: none;">
+
+          <button  id="removeBgButton">Remove Background</button>
+          <div id="backgroundColorSelector" style="display:none;">
+              <label for="bgColor">Select Background Color:</label>
+              <input type="color" id="bgColor" value="#ffffff">
+              <button  id="applyBgColor">Apply Background Color</button>
+          </div>
+        </label>
+        
        
        
        
