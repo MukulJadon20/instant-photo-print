@@ -267,11 +267,14 @@ image {
     background-color: var(--body-color);
 }
 
-#removeBgButton{
+#removeBgButton,#applyBgColor{
     padding: 10px;
     margin-left: 100px;
     background-color: var(--body-color);
     
+}
+.label{
+    margin-left: 100px;
 }
 
 #cropPassport #cropCustom {
