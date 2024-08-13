@@ -13,66 +13,66 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const rotateOptions = document.querySelectorAll(".rotate button");
 
-  // document
-  //   .getElementById("cropCustom")
-  //   .addEventListener("click", cropCustomSize);
-  // document
-  //   .getElementById("cropPassport")
-  //   .addEventListener("click", cropToRatio);
+  // // document
+  // //   .getElementById("cropCustom")
+  // //   .addEventListener("click", cropCustomSize);
+  // // document
+  // //   .getElementById("cropPassport")
+  // //   .addEventListener("click", cropToRatio);
 
-  // =====CROP RATIO=====
+  // // =====CROP RATIO=====
 
-  function cropToRatio() {
-    let targetRatio = 3 / 4;
-    let imgRatio = image.width / image.height;
-    let cropWidth, cropHeight;
+  // function cropToRatio() {
+  //   let targetRatio = 3 / 4;
+  //   let imgRatio = image.width / image.height;
+  //   let cropWidth, cropHeight;
 
-    if (imgRatio > targetRatio) {
-      cropHeight = image.height;
-      cropWidth = cropHeight * targetRatio;
-    } else {
-      cropWidth = image.width;
-      cropHeight = cropWidth / targetRatio;
-    }
+  //   if (imgRatio > targetRatio) {
+  //     cropHeight = image.height;
+  //     cropWidth = cropHeight * targetRatio;
+  //   } else {
+  //     cropWidth = image.width;
+  //     cropHeight = cropWidth / targetRatio;
+  //   }
 
-    let cropX = (image.width - cropWidth) / 2;
-    let cropY = (image.height - cropHeight) / 2;
+  //   let cropX = (image.width - cropWidth) / 2;
+  //   let cropY = (image.height - cropHeight) / 2;
 
-    cropImage(cropWidth, cropHeight, cropX, cropY);
-  }
+  //   cropImage(cropWidth, cropHeight, cropX, cropY);
+  // }
 
-  // ====custom Crop====
-  function cropCustomSize() {
-    let customWidth = parseInt(prompt("Enter custom width in pixels:", "300"));
-    let customHeight = parseInt(
-      prompt("Enter custom height in pixels:", "400")
-    );
-    let cropX = (image.width - customWidth) / 2;
-    let cropY = (image.height - customHeight) / 2;
-    cropImage(customWidth, customHeight, cropX, cropY);
-  }
+  // // ====custom Crop====
+  // function cropCustomSize() {
+  //   let customWidth = parseInt(prompt("Enter custom width in pixels:", "300"));
+  //   let customHeight = parseInt(
+  //     prompt("Enter custom height in pixels:", "400")
+  //   );
+  //   let cropX = (image.width - customWidth) / 2;
+  //   let cropY = (image.height - customHeight) / 2;
+  //   cropImage(customWidth, customHeight, cropX, cropY);
+  // }
 
-  function cropImage(width, height, startX, startY) {
-    let croppedCanvas = document.createElement("canvas");
-    let croppedCtx = croppedCanvas.getContext("2d");
-    croppedCanvas.width = width;
-    croppedCanvas.height = height;
-    croppedCtx.drawImage(
-      image,
-      startX,
-      startY,
-      width,
-      height,
-      0,
-      0,
-      width,
-      height
-    );
-    photoCanvas.width = width;
-    photoCanvas.height = height;
-    ctx.drawImage(croppedCanvas, 0, 0);
-    image.src = croppedCanvas.toDataURL(); // Update the original image with the cropped one
-  }
+  // function cropImage(width, height, startX, startY) {
+  //   let croppedCanvas = document.createElement("canvas");
+  //   let croppedCtx = croppedCanvas.getContext("2d");
+  //   croppedCanvas.width = width;
+  //   croppedCanvas.height = height;
+  //   croppedCtx.drawImage(
+  //     image,
+  //     startX,
+  //     startY,
+  //     width,
+  //     height,
+  //     0,
+  //     0,
+  //     width,
+  //     height
+  //   );
+  //   photoCanvas.width = width;
+  //   photoCanvas.height = height;
+  //   ctx.drawImage(croppedCanvas, 0, 0);
+  //   image.src = croppedCanvas.toDataURL(); // Update the original image with the cropped one
+  // }
 
   // let image = new Image();
   // let rotate = 0,
@@ -146,22 +146,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // ===Text and Date Add ===
+//   // ===Text and Date Add ===
 
-  document.getElementById("addText").addEventListener("click", () => {
-    let name = document.getElementById("nameInput").value;
-    let date = document.getElementById("dateInput").value;
+//   document.getElementById("addText").addEventListener("click", () => {
+//     let name = document.getElementById("nameInput").value;
+//     let date = document.getElementById("dateInput").value;
 
-    // Draw white strip
-    ctx.fillStyle = "white";
-    ctx.fillRect(0, photoCanvas.height - 60, photoCanvas.width - 50, 100);
+//     // Draw white strip
+//     ctx.fillStyle = "white";
+//     ctx.fillRect(0, photoCanvas.height - 60, photoCanvas.width - 50, 100);
 
-    // Draw text
-    ctx.font = "bold 40px Arial";
-    ctx.fillStyle = "black";
-    ctx.fillText(name, 300, photoCanvas.height - 30);
-    ctx.fillText(date, 300, photoCanvas.height);
-  });
+//     // Draw text
+//     ctx.font = "bold 40px Arial";
+//     ctx.fillStyle = "black";
+//     ctx.fillText(name, 300, photoCanvas.height - 30);
+//     ctx.fillText(date, 300, photoCanvas.height);
+//   });
 });
 
 let toggle = () => {
@@ -243,6 +243,13 @@ function unhideLabel5() {
   } else {
     label.style.display = "none";
   }
+}
+
+function hideLabels() {
+  const labels = document.querySelectorAll("#myLabel, #myLabel1, #myLabel2, #myLabel3, #myLabel4, #myLabel5");
+  labels.forEach((label) => {
+    label.style.display = "none";
+  });
 }
 
 // ===== ROTATE AND FLIP=====
@@ -332,6 +339,7 @@ applyBgColorButton.addEventListener('click', () => {
       }
   }
   ctx.putImageData(imageData, 0, 0);
+  hideLabels();
 });
 
 
@@ -347,6 +355,32 @@ function drawImage() {
   ctx.restore();
   photoCanvas.style.display = "block";
 }
+
+// ADD TEXT NAME AND DATE
+document.getElementById("addText").addEventListener("click", () => {
+  let name = document.getElementById("nameInput").value;
+  let date = document.getElementById("dateInput").value;
+
+  // Draw white strip
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, photoCanvas.height - 60, photoCanvas.width, 60);
+
+  // Set font style
+  ctx.font = "bold 30px Arial";
+  ctx.fillStyle = "black";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+
+  // Calculate text position
+  const centerX = photoCanvas.width / 2;
+  const textY = photoCanvas.height - 45;
+
+  // Draw text centered
+  ctx.fillText(name, centerX, textY - 10);
+  ctx.fillText(date, centerX, textY + 25);
+  hideLabels();
+});
+
 
 function resetTransformations() {
   currentRotation = 0;
@@ -399,6 +433,7 @@ confirmCropButton.addEventListener("click", () => {
   ctx.drawImage(croppedCanvas, 0, 0);
   cropper.destroy();
   confirmCropButton.style.display = "none";
+  hideLabels();
 });
 
 function copyImage() {
@@ -414,6 +449,7 @@ function copyImage() {
   } else {
     alert("Please upload an image and specify a valid number of copies.");
   }
+  hideLabels();
 }
 
 function printImages() {
@@ -425,9 +461,9 @@ function printImages() {
   const printWindow = window.open("", "", "height=600,width=800");
   const styles = `
         <style>
-            body { margin: 0; padding: 20px; }
+            body { margin: 0; padding: 0; }
             .print-container { display: flex; flex-wrap: wrap; }
-            .copied-image { margin: 10px; border: 1px solid #ccc; max-width: 100px; max-height: 100px; }
+            .copied-image { margin: 10px; border: 1px solid #ccc; width: 65px; height: 100px; }
         </style>
     `;
   const content = `
