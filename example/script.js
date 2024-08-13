@@ -13,105 +13,101 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const rotateOptions = document.querySelectorAll(".rotate button");
 
-  // document
-  //   .getElementById("cropCustom")
-  //   .addEventListener("click", cropCustomSize);
-  // document
-  //   .getElementById("cropPassport")
-  //   .addEventListener("click", cropToRatio);
+  // // document
+  // //   .getElementById("cropCustom")
+  // //   .addEventListener("click", cropCustomSize);
+  // // document
+  // //   .getElementById("cropPassport")
+  // //   .addEventListener("click", cropToRatio);
 
-  // =====CROP RATIO=====
+  // // =====CROP RATIO=====
 
-  function cropToRatio() {
-    let targetRatio = 3 / 4;
-    let imgRatio = image.width / image.height;
-    let cropWidth, cropHeight;
+  // function cropToRatio() {
+  //   let targetRatio = 3 / 4;
+  //   let imgRatio = image.width / image.height;
+  //   let cropWidth, cropHeight;
 
-    if (imgRatio > targetRatio) {
-      cropHeight = image.height;
-      cropWidth = cropHeight * targetRatio;
-    } else {
-      cropWidth = image.width;
-      cropHeight = cropWidth / targetRatio;
-    }
+  //   if (imgRatio > targetRatio) {
+  //     cropHeight = image.height;
+  //     cropWidth = cropHeight * targetRatio;
+  //   } else {
+  //     cropWidth = image.width;
+  //     cropHeight = cropWidth / targetRatio;
+  //   }
 
-    let cropX = (image.width - cropWidth) / 2;
-    let cropY = (image.height - cropHeight) / 2;
+  //   let cropX = (image.width - cropWidth) / 2;
+  //   let cropY = (image.height - cropHeight) / 2;
 
-    cropImage(cropWidth, cropHeight, cropX, cropY);
-  }
+  //   cropImage(cropWidth, cropHeight, cropX, cropY);
+  // }
 
-  // ====custom Crop====
-  function cropCustomSize() {
-    let customWidth = parseInt(prompt("Enter custom width in pixels:", "300"));
-    let customHeight = parseInt(
-      prompt("Enter custom height in pixels:", "400")
-    );
-    let cropX = (image.width - customWidth) / 2;
-    let cropY = (image.height - customHeight) / 2;
-    cropImage(customWidth, customHeight, cropX, cropY);
-  }
+  // // ====custom Crop====
+  // function cropCustomSize() {
+  //   let customWidth = parseInt(prompt("Enter custom width in pixels:", "300"));
+  //   let customHeight = parseInt(
+  //     prompt("Enter custom height in pixels:", "400")
+  //   );
+  //   let cropX = (image.width - customWidth) / 2;
+  //   let cropY = (image.height - customHeight) / 2;
+  //   cropImage(customWidth, customHeight, cropX, cropY);
+  // }
 
-  function cropImage(width, height, startX, startY) {
-    let croppedCanvas = document.createElement("canvas");
-    let croppedCtx = croppedCanvas.getContext("2d");
-    croppedCanvas.width = width;
-    croppedCanvas.height = height;
-    croppedCtx.drawImage(
-      image,
-      startX,
-      startY,
-      width,
-      height,
-      0,
-      0,
-      width,
-      height
-    );
-    photoCanvas.width = width;
-    photoCanvas.height = height;
-    ctx.drawImage(croppedCanvas, 0, 0);
-    image.src = croppedCanvas.toDataURL(); // Update the original image with the cropped one
-  }
+  // function cropImage(width, height, startX, startY) {
+  //   let croppedCanvas = document.createElement("canvas");
+  //   let croppedCtx = croppedCanvas.getContext("2d");
+  //   croppedCanvas.width = width;
+  //   croppedCanvas.height = height;
+  //   croppedCtx.drawImage(
+  //     image,
+  //     startX,
+  //     startY,
+  //     width,
+  //     height,
+  //     0,
+  //     0,
+  //     width,
+  //     height
+  //   );
+  //   photoCanvas.width = width;
+  //   photoCanvas.height = height;
+  //   ctx.drawImage(croppedCanvas, 0, 0);
+  //   image.src = croppedCanvas.toDataURL(); // Update the original image with the cropped one
+  // }
 
   // let image = new Image();
   // let rotate = 0,
   //   flipHorizontal = 1,
   //   flipVertical = 1;
-  upload.addEventListener("change", (event) => {
-    const file = event.target.files[0];
+
+  // Disable the file input initially
+  function disableUpload(disable) {
+    upload.disabled = disable;
+  }
+
+  // Re-enable file input after operation
+  function enableUpload() {
+    disableUpload(false);
+  }
+
+
+  upload.addEventListener("change", (e) => {
+    disableUpload(true);  // Disable the file input
+
+    const file = e.target.files[0];
     const reader = new FileReader();
-    reader.onload = (e) => {
-      image.src = e.target.result;
-      image.style.display = "block";
-      image.onload = () => {
-        adjustCanvasSize(image.width, image.height);
-        ctx.drawImage(image, 0, 0, photoCanvas.width, photoCanvas.height);
-        originalImageData = ctx.getImageData(
-          0,
-          0,
-          photoCanvas.width,
-          photoCanvas.height
-        );
-        if (cropper) {
-          cropper.destroy();
-        }
-        image.style.display = "none";
-      };
+
+    reader.onload = (event) => {
+      image.src = event.target.result;
     };
     reader.readAsDataURL(file);
   });
 
-  function adjustCanvasSize(imgWidth, imgHeight) {
-    const aspectRatio = 3 / 4;
-    if (imgWidth / imgHeight > aspectRatio) {
-      photoCanvas.width = imgHeight * aspectRatio;
-      photoCanvas.height = imgHeight;
-    } else {
-      photoCanvas.width = imgWidth;
-      photoCanvas.height = imgWidth / aspectRatio;
-    }
-  }
+  image.onload = () => {
+    photoCanvas.width = image.width;
+    photoCanvas.height = image.height;
+    enableUpload();
+    applyFilters();
+  };
 
   const applyFilters = () => {
     ctx.clearRect(0, 0, photoCanvas.width, photoCanvas.height);
@@ -164,7 +160,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
- 
+//   // ===Text and Date Add ===
+
+//   document.getElementById("addText").addEventListener("click", () => {
+//     let name = document.getElementById("nameInput").value;
+//     let date = document.getElementById("dateInput").value;
+
+//     // Draw white strip
+//     ctx.fillStyle = "white";
+//     ctx.fillRect(0, photoCanvas.height - 60, photoCanvas.width - 50, 100);
+
+//     // Draw text
+//     ctx.font = "bold 40px Arial";
+//     ctx.fillStyle = "black";
+//     ctx.fillText(name, 300, photoCanvas.height - 30);
+//     ctx.fillText(date, 300, photoCanvas.height);
+//   });
 });
 
 let toggle = () => {
@@ -265,10 +276,10 @@ const cropButton = document.getElementById("cropButton");
 const image = document.getElementById("image");
 const confirmCropButton = document.getElementById("confirmCrop");
 
-const removeBgButton = document.getElementById("removeBgButton");
-const bgColorSelector = document.getElementById("backgroundColorSelector");
-const bgColorInput = document.getElementById("bgColor");
-const applyBgColorButton = document.getElementById("applyBgColor");
+const removeBgButton = document.getElementById('removeBgButton');
+const bgColorSelector = document.getElementById('backgroundColorSelector');
+const bgColorInput = document.getElementById('bgColor');
+const applyBgColorButton = document.getElementById('applyBgColor');
 
 let originalImageData;
 
@@ -277,7 +288,19 @@ let currentRotation = 0;
 let flippedHorizontal = false;
 let flippedVertical = false;
 
+// Disable the file input initially
+function disableUpload(disable) {
+  upload.disabled = disable;
+}
+
+// Re-enable file input after operation
+function enableUpload() {
+  disableUpload(false);
+}
+
 upload.addEventListener("change", (event) => {
+  disableUpload(true);  // Disable the file input
+
   const file = event.target.files[0];
   const reader = new FileReader();
   reader.onload = (e) => {
@@ -287,36 +310,34 @@ upload.addEventListener("change", (event) => {
       photoCanvas.width = image.width;
       photoCanvas.height = image.height;
       ctx.drawImage(image, 0, 0);
-      originalImageData = ctx.getImageData(
-        0,
-        0,
-        photoCanvas.width,
-        photoCanvas.height
-      );
+      originalImageData = ctx.getImageData(0, 0, photoCanvas.width, photoCanvas.height);
       if (cropper) {
         cropper.destroy();
       }
-      image.style.display = "none";
+      enableUpload();  // Re-enable file input after image is loaded
     };
   };
   reader.readAsDataURL(file);
 });
 
-removeBgButton.addEventListener("click", async () => {
+
+removeBgButton.addEventListener('click', async () => {
   if (!upload.files.length) return;
+
+  disableUpload(true);  // Disable the file input
 
   const file = upload.files[0];
   const formData = new FormData();
-  formData.append("image_file", file);
-  formData.append("size", "auto");
+  formData.append('image_file', file);
+  formData.append('size', 'auto');
 
-  const apikey = "ohpRYQcMRh3QMmre5TrR1Vsc";
-  const response = await fetch("https://api.remove.bg/v1.0/removebg", {
-    method: "POST",
-    headers: {
-      "X-Api-Key": "ohpRYQcMRh3QMmre5TrR1Vsc",
-    },
-    body: formData,
+  const apikey='ohpRYQcMRh3QMmre5TrR1Vsc';
+  const response = await fetch('https://api.remove.bg/v1.0/removebg', {
+      method: 'POST',
+      headers: {
+          'X-Api-Key': 'ohpRYQcMRh3QMmre5TrR1Vsc'
+      },
+      body: formData
   });
 
   const resultBlob = await response.blob();
@@ -324,36 +345,32 @@ removeBgButton.addEventListener("click", async () => {
   const img = new Image();
   img.src = resultUrl;
   img.onload = () => {
-    ctx.clearRect(0, 0, photoCanvas.width, photoCanvas.height);
-    photoCanvas.width = img.width;
-    photoCanvas.height = img.height;
-    ctx.drawImage(img, 0, 0);
-    bgColorSelector.style.display = "block";
+      ctx.clearRect(0, 0, photoCanvas.width,photoCanvas.height);
+      photoCanvas.width = img.width;
+      photoCanvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+      bgColorSelector.style.display = 'block';
+      enableUpload();  // Re-enable file input after operation is done
   };
 });
 
-applyBgColorButton.addEventListener("click", () => {
+applyBgColorButton.addEventListener('click', () => {
   const bgColor = bgColorInput.value;
-  const imageData = ctx.getImageData(
-    0,
-    0,
-    photoCanvas.width,
-    photoCanvas.height
-  );
+  const imageData = ctx.getImageData(0, 0,photoCanvas.width, photoCanvas.height);
   const data = imageData.data;
 
   for (let i = 0; i < data.length; i += 4) {
-    if (data[i + 3] === 0) {
-      // Transparent pixel
-      data[i] = parseInt(bgColor.slice(1, 3), 16); // R
-      data[i + 1] = parseInt(bgColor.slice(3, 5), 16); // G
-      data[i + 2] = parseInt(bgColor.slice(5, 7), 16); // B
-      data[i + 3] = 255; // A
-    }
+      if (data[i + 3] === 0) { // Transparent pixel
+          data[i] = parseInt(bgColor.slice(1, 3), 16);     // R
+          data[i + 1] = parseInt(bgColor.slice(3, 5), 16); // G
+          data[i + 2] = parseInt(bgColor.slice(5, 7), 16); // B
+          data[i + 3] = 255;                               // A
+      }
   }
   ctx.putImageData(imageData, 0, 0);
   hideLabels();
 });
+
 
 function drawImage() {
   photoCanvas.width = image.width;
@@ -368,7 +385,7 @@ function drawImage() {
   photoCanvas.style.display = "block";
 }
 
-
+// ADD TEXT NAME AND DATE
 document.getElementById("addText").addEventListener("click", () => {
   let name = document.getElementById("nameInput").value;
   let date = document.getElementById("dateInput").value;
@@ -378,7 +395,7 @@ document.getElementById("addText").addEventListener("click", () => {
   ctx.fillRect(0, photoCanvas.height - 60, photoCanvas.width, 60);
 
   // Set font style
-  ctx.font = "bold 35px Arial";
+  ctx.font = "bold 30px Arial";
   ctx.fillStyle = "black";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
@@ -393,23 +410,6 @@ document.getElementById("addText").addEventListener("click", () => {
   hideLabels();
 });
 
-
-
-//  // ===Text and Date Add ===
-//  document.getElementById("addText").addEventListener("click", () => {
-//   let name = document.getElementById("nameInput").value;
-//   let date = document.getElementById("dateInput").value;
-
-//   // Draw white strip
-//   ctx.fillStyle = "white";
-//   ctx.fillRect(0, photoCanvas.height - 60, photoCanvas.width - 50, 100);
-
-//   // Draw text
-//   ctx.font = "bold 40px Arial";
-//   ctx.fillStyle = "black";
-//   ctx.fillText(name, 300, photoCanvas.height - 30);
-//   ctx.fillText(date, 300, photoCanvas.height);
-// });
 
 function resetTransformations() {
   currentRotation = 0;
@@ -435,7 +435,6 @@ function flipHorizontal() {
 function flipVertical() {
   flippedVertical = !flippedVertical;
   drawImage();
- 
 }
 
 function downloadImage() {
@@ -463,6 +462,7 @@ confirmCropButton.addEventListener("click", () => {
   ctx.drawImage(croppedCanvas, 0, 0);
   cropper.destroy();
   confirmCropButton.style.display = "none";
+  enableUpload();  // Re-enable file input after crop is confirmed
   hideLabels();
 });
 
@@ -517,108 +517,3 @@ function printImages() {
   printWindow.focus();
   printWindow.print();
 }
-
-// function printImages() {
-//   if (copiesContainer.children.length === 0) {
-//     alert("No images to print.");
-//     return;
-//   }
-
-//   const printWindow = window.open("", "", "height=600,width=800");
-//   const styles = `
-//         <style>
-//             body { margin: 0; padding: 20px; }
-//             .print-container { display: flex; flex-wrap: wrap; }
-//             .copied-image { margin: 10px; border: 1px solid #ccc; max-width: 100px; max-height: 100px; }
-//         </style>
-//     `;
-//   const content = `
-//         <html>
-//         <head>
-//             ${styles}
-//         </head>
-//         <body>
-//             <div class="print-container">
-//                 ${Array.from(copiesContainer.children)
-//                   .map(
-//                     (child) => `<img src="${child.src}" class="copied-image">`
-//                   )
-//                   .join("")}
-//             </div>
-//         </body>
-//         </html>
-//     `;
-//   printWindow.document.write(content);
-//   printWindow.document.close();
-//   printWindow.focus();
-//   printWindow.print();
-// }
-
-
-
-// // Existing code...
-
-// document.addEventListener("DOMContentLoaded", () => {
-//   //... your existing code
-
-//   function toggleSectionVisibility() {
-//     // Hide all labels and sections
-//     document.getElementById("myLabel").style.display = "none";
-//     document.getElementById("myLabel1").style.display = "none";
-//     document.getElementById("myLabel2").style.display = "none";
-//     document.getElementById("myLabel3").style.display = "none";
-//     document.getElementById("myLabel4").style.display = "none";
-//     document.getElementById("myLabel5").style.display = "none";
-
-//     // Re-show necessary sections for editing tools, custom photo, etc.
-//     document.getElementById("rotationSection").style.display = "block";
-//     document.getElementById("editingToolsSection").style.display = "block";
-//     document.getElementById("customPhotoSection").style.display = "block";
-//     document.getElementById("nameDateSection").style.display = "block";
-//     document.getElementById("backgroundMinSection").style.display = "block";
-//     document.getElementById("copiesSection").style.display = "block";
-//   }
-
-//   // Use this function where necessary
-//   cropButton.addEventListener("click", () => {
-//     //... existing cropper initialization code
-
-//     // Hide other sections once cropping is done
-//     cropper.on("cropend", () => {
-//       toggleSectionVisibility();
-//     });
-//   });
-
-//   confirmCropButton.addEventListener("click", () => {
-//     //... existing crop confirmation code
-
-//     // Call toggleSectionVisibility to reset UI after cropping
-//     toggleSectionVisibility();
-//   });
-
-//   // Similarly, you can call toggleSectionVisibility after other actions, like flipping, rotating, etc.
-//   rotateLeftButton.addEventListener("click", () => {
-//     rotateLeft();
-//     toggleSectionVisibility();
-//   });
-
-//   rotateRightButton.addEventListener("click", () => {
-//     rotateRight();
-//     toggleSectionVisibility();
-//   });
-
-//   flipHorizontal.addEventListener("click", () => {
-//     flipHorizontal();
-//     toggleSectionVisibility();
-//   });
-
-//   flipVertical.addEventListener("click", () => {
-//     flipVertical();
-//     toggleSectionVisibility();
-//   });
-
-//   //... other event listeners
-
-//   // Finally, call toggleSectionVisibility initially to set the correct visibility on page load
-//   toggleSectionVisibility();
-// });
