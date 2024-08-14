@@ -263,8 +263,18 @@ image {
 
 .hide-btn1 {
     padding: 20px;
-    margin-left: 120px;
+    margin-left: 60px;
     background-color: var(--body-color);
+}
+
+#removeBgButton,#applyBgColor{
+    padding: 10px;
+    margin-left: 100px;
+    background-color: var(--body-color);
+    
+}
+.label{
+    margin-left: 100px;
 }
 
 #cropPassport #cropCustom {
@@ -447,10 +457,10 @@ image {
 }
 
 
-#myLabel {
+/* #myLabel {
     font-size: 16px;
     color: black;
-}
+} */
 
 
 

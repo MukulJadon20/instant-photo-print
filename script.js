@@ -252,6 +252,36 @@ function hideLabels() {
   });
 }
 
+
+function unhideTools(){
+  var label = document.getElementById("myLabel6");
+  if (label.style.display === "none") {
+    label.style.display = "block";
+  } else {
+    label.style.display = "none";
+  }
+}
+
+function unhideRotate(){
+  var label = document.getElementById("myLabel7");
+  if (label.style.display === "none") {
+    label.style.display = "block";
+  } else {
+    label.style.display = "none";
+  }
+}
+
+function unhideCopy(){
+  var label = document.getElementById("myLabel8");
+  if (label.style.display === "none") {
+    label.style.display = "block";
+  } else {
+    label.style.display = "none";
+  }
+}
+
+
+
 // ===== ROTATE AND FLIP=====
 const photoCanvas = document.getElementById("photoCanvas");
 const ctx = photoCanvas.getContext("2d");
@@ -277,6 +307,10 @@ let flippedVertical = false;
 upload.addEventListener("change", (event) => {
   const file = event.target.files[0];
   const reader = new FileReader();
+
+  // Disable the upload input while the image is being processed
+  upload.disabled = true;
+
   reader.onload = (e) => {
     image.src = e.target.result;
     image.style.display = "block";
@@ -285,10 +319,13 @@ upload.addEventListener("change", (event) => {
       photoCanvas.height = image.height;
       ctx.drawImage(image, 0, 0);
       originalImageData = ctx.getImageData(0, 0, photoCanvas.width, photoCanvas.height);
+      
       if (cropper) {
         cropper.destroy();
       }
       image.style.display = "none";
+       // Enable the upload input after the image is loaded
+       upload.disabled = false;
     };
   };
   reader.readAsDataURL(file);
@@ -297,6 +334,9 @@ upload.addEventListener("change", (event) => {
 
 removeBgButton.addEventListener('click', async () => {
   if (!upload.files.length) return;
+
+  // Disable buttons while processing
+  disableButtons(true);
 
   const file = upload.files[0];
   const formData = new FormData();
@@ -323,9 +363,13 @@ removeBgButton.addEventListener('click', async () => {
       ctx.drawImage(img, 0, 0);
       bgColorSelector.style.display = 'block';
   };
+  // Enable buttons after processing
+  disableButtons(false);
 });
 
 applyBgColorButton.addEventListener('click', () => {
+   // Disable buttons while processing
+   disableButtons(true);
   const bgColor = bgColorInput.value;
   const imageData = ctx.getImageData(0, 0,photoCanvas.width, photoCanvas.height);
   const data = imageData.data;
@@ -339,6 +383,8 @@ applyBgColorButton.addEventListener('click', () => {
       }
   }
   ctx.putImageData(imageData, 0, 0);
+   // Enable buttons after processing
+   disableButtons(false);
   hideLabels();
 });
 
@@ -356,30 +402,58 @@ function drawImage() {
   photoCanvas.style.display = "block";
 }
 
+
 // ADD TEXT NAME AND DATE
 document.getElementById("addText").addEventListener("click", () => {
-  let name = document.getElementById("nameInput").value;
-  let date = document.getElementById("dateInput").value;
+  const name = document.getElementById("nameInput").value;
+  const date = document.getElementById("dateInput").value;
+  const fontSize = parseInt(document.getElementById("fontSizeInput").value, 10);
 
   // Draw white strip
   ctx.fillStyle = "white";
-  ctx.fillRect(0, photoCanvas.height - 60, photoCanvas.width, 60);
+  ctx.fillRect(0, photoCanvas.height - fontSize * 2, photoCanvas.width, fontSize * 2);
 
   // Set font style
-  ctx.font = "bold 30px Arial";
+  ctx.font = `bold ${fontSize}px Arial`;
   ctx.fillStyle = "black";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
 
   // Calculate text position
   const centerX = photoCanvas.width / 2;
-  const textY = photoCanvas.height - 45;
+  const textY = photoCanvas.height - fontSize - 10;
 
   // Draw text centered
-  ctx.fillText(name, centerX, textY - 10);
-  ctx.fillText(date, centerX, textY + 25);
+  ctx.fillText(name, centerX, textY);
+  ctx.fillText(date, centerX, textY + fontSize);
   hideLabels();
 });
+
+
+// // ADD TEXT NAME AND DATE
+// document.getElementById("addText").addEventListener("click", () => {
+//   let name = document.getElementById("nameInput").value;
+//   let date = document.getElementById("dateInput").value;
+
+//   // Draw white strip
+//   ctx.fillStyle = "white";
+//   ctx.fillRect(0, photoCanvas.height - 60, photoCanvas.width, 60);
+
+//   // Set font style
+//   ctx.font = "bold 30px Arial";
+//   ctx.fillStyle = "black";
+//   ctx.textAlign = "center";
+//   ctx.textBaseline = "middle";
+
+//   // Calculate text position
+//   const centerX = photoCanvas.width / 2;
+//   const textY = photoCanvas.height - 45;
+
+//   // Draw text centered
+//   ctx.fillText(name, centerX, textY - 10);
+//   ctx.fillText(date, centerX, textY + 25);
+//   hideLabels();
+// });
 
 
 function resetTransformations() {
@@ -433,8 +507,30 @@ confirmCropButton.addEventListener("click", () => {
   ctx.drawImage(croppedCanvas, 0, 0);
   cropper.destroy();
   confirmCropButton.style.display = "none";
+  upload.disabled = false; // Re-enable the upload button after cropping
   hideLabels();
 });
+
+  // Function to disable or enable buttons
+  function disableButtons(disable) {
+    const buttons = [removeBgButton, applyBgColorButton, confirmCropButton];
+    buttons.forEach((btn) => {
+      btn.disabled = disable;
+    });
+  }
+   // Enable cropper and disable upload while cropping
+ document.getElementById("cropButton").addEventListener("click", () => {
+  if (cropper) {
+    cropper.destroy();
+  }
+  cropper = new Cropper(photoCanvas, {
+    aspectRatio: NaN,
+    viewMode: 1,
+  });
+  confirmCropButton.style.display = "inline-block";
+  upload.disabled = true; // Disable the upload button during cropping
+});
+
 
 function copyImage() {
   const copyCount = parseInt(copyCountInput.value);
@@ -463,7 +559,7 @@ function printImages() {
         <style>
             body { margin: 0; padding: 0; }
             .print-container { display: flex; flex-wrap: wrap; }
-            .copied-image { margin: 10px; border: 1px solid #ccc; width: 65px; height: 100px; }
+            .copied-image { margin: 10px; border: 1px solid #ccc; width: 150px; height: 150px; }
         </style>
     `;
   const content = `
