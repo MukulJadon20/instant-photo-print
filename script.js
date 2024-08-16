@@ -459,10 +459,10 @@ let togglebtn = () => {
   }
 };
 
-function toggleSidebar() {
-  const sidebar = document.querySelector(".sidebar");
-  sidebar.classList.toggle("open");
-}
+// function toggleSidebar() {
+//   const sidebar = document.querySelector(".sidebar");
+//   sidebar.classList.toggle("open");
+// }
 
 function unhideLabel() {
   var label = document.getElementById("myLabel");
