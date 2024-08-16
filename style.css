@@ -368,7 +368,13 @@ image {
 .btn3 {
     font-size: 2rem;
     background: purple;
+    cursor: pointer;
 }
+
+input,button{
+    cursor: pointer;
+}
+
 
 
 /* Responsive Styles */

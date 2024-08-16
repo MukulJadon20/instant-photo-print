@@ -12,20 +12,19 @@ const bgColorSelector = document.getElementById("backgroundColorSelector");
 const bgColorInput = document.getElementById("bgColor");
 const applyBgColorButton = document.getElementById("applyBgColor");
 
-  const brightness = document.getElementById("brightness");
-  const contrast = document.getElementById("contrast");
-  const grayscale = document.getElementById("grayscale");
-  const saturation = document.getElementById("saturation");
-  const sharpness = document.getElementById("sharpness");
-  const redeye = document.getElementById("redeye");
-  const colorBalance = document.getElementById("colorBalance");
+const brightness = document.getElementById("brightness");
+const contrast = document.getElementById("contrast");
+const grayscale = document.getElementById("grayscale");
+const saturation = document.getElementById("saturation");
+const sharpness = document.getElementById("sharpness");
+const redeye = document.getElementById("redeye");
+const colorBalance = document.getElementById("colorBalance");
 
-  const rotateOptions = document.querySelectorAll(".rotate button");
+const rotateOptions = document.querySelectorAll(".rotate button");
 
-
-  const applyFilters = () => {
-    ctx.clearRect(0, 0, photoCanvas.width, photoCanvas.height);
-    ctx.filter = `
+const applyFilters = () => {
+  ctx.clearRect(0, 0, photoCanvas.width, photoCanvas.height);
+  ctx.filter = `
             brightness(${brightness.value}%)
             contrast(${contrast.value}%)
             grayscale(${grayscale.value}%)
@@ -33,53 +32,50 @@ const applyBgColorButton = document.getElementById("applyBgColor");
       brightness(${100 + parseInt(sharpness.value)}%)
       contrast(${100 + parseInt(colorBalance.value)}%)
         `;
-    ctx.drawImage(image, 0, 0);
+  ctx.drawImage(image, 0, 0);
 
-    // Apply Red-Eye Reduction (simulated by decreasing red channel intensity)
-    if (parseInt(redeye.value) > 0) {
-      const imageData = ctx.getImageData(
-        0,
-        0,
-        photoCanvas.width,
-        photoCanvas.height
-      );
-      const data = imageData.data;
-      for (let i = 0; i < data.length; i += 4) {
-        data[i] = data[i] - parseInt(redeye.value); // Red channel
-      }
-      ctx.putImageData(imageData, 0, 0);
+  // Apply Red-Eye Reduction (simulated by decreasing red channel intensity)
+  if (parseInt(redeye.value) > 0) {
+    const imageData = ctx.getImageData(
+      0,
+      0,
+      photoCanvas.width,
+      photoCanvas.height
+    );
+    const data = imageData.data;
+    for (let i = 0; i < data.length; i += 4) {
+      data[i] = data[i] - parseInt(redeye.value); // Red channel
     }
-    
-  };
+    ctx.putImageData(imageData, 0, 0);
+  }
+};
 
-  brightness.addEventListener("input", applyFilters);
-  contrast.addEventListener("input", applyFilters);
-  grayscale.addEventListener("input", applyFilters);
-  saturation.addEventListener("input", applyFilters);
-  sharpness.addEventListener("input", applyFilters);
-  redeye.addEventListener("input", applyFilters);
-  colorBalance.addEventListener("input", applyFilters);
+brightness.addEventListener("input", applyFilters);
+contrast.addEventListener("input", applyFilters);
+grayscale.addEventListener("input", applyFilters);
+saturation.addEventListener("input", applyFilters);
+sharpness.addEventListener("input", applyFilters);
+redeye.addEventListener("input", applyFilters);
+colorBalance.addEventListener("input", applyFilters);
 
-  rotateOptions.forEach((option) => {
-    option.addEventListener("click", () => {
-      if (option.id === "left") {
-        rotate -= 90;
-      } else if (option.id === "right") {
-        rotate += 90;
-      } else if (option.id === "horizontal") {
-        flipHorizontal = flipHorizontal === 1 ? -1 : 1;
-      } else {
-        flipVertical = flipVertical === 1 ? -1 : 1;
-      }
-      applyFilters();
-    });
+rotateOptions.forEach((option) => {
+  option.addEventListener("click", () => {
+    if (option.id === "left") {
+      rotate -= 90;
+    } else if (option.id === "right") {
+      rotate += 90;
+    } else if (option.id === "horizontal") {
+      flipHorizontal = flipHorizontal === 1 ? -1 : 1;
+    } else {
+      flipVertical = flipVertical === 1 ? -1 : 1;
+    }
+    applyFilters();
   });
-
-
+});
 
 let originalImageData;
 
-let image =new Image();
+let image = new Image();
 let cropper;
 let currentRotation = 0;
 let flippedHorizontal = false;
@@ -145,15 +141,15 @@ confirmCropButton.addEventListener("click", () => {
   confirmCropButton.style.display = "none";
   upload.disabled = false; // Re-enable the upload button after cropping
 
-   // Update the image source with the current canvas content
-   updateImage();
+  // Update the image source with the current canvas content
+  updateImage();
 
   hideLabels();
 });
 
 // Remove background functionality
 removeBgButton.addEventListener("click", async () => {
-    if (!image.src) return;
+  if (!image.src) return;
 
   // Disable buttons while processing
   disableButtons(true);
@@ -166,20 +162,20 @@ removeBgButton.addEventListener("click", async () => {
   ctx.fillText("Loading...", photoCanvas.width / 2, photoCanvas.height / 2);
 
   // // Convert canvas to file-like object (Blob) if needed
-  // let file;
-  // if ( image.src) {
-  //   file = upload.files[0];
-  // } else {
-  //   file = await fetch(photoCanvas.toDataURL()).then(res => res.blob());
-  // }
-   // Convert the current canvas content to a file-like object (Blob)
-   const file = await fetch(photoCanvas.toDataURL()).then((res) => res.blob());
+  let file;
+  if ( image.src) {
+    file = upload.files[0];
+  } else {
+    file = await fetch(photoCanvas.toDataURL()).then(res => res.blob());
+  }
+ // Convert the current canvas content to a file-like object (Blob)
+//  const file = await fetch(photoCanvas.toDataURL()).then((res) => res.blob());
 
   const formData = new FormData();
   formData.append("image_file", file);
   formData.append("size", "auto");
 
-  const apikey = "ohpRYQcMRh3QMmre5TrR1Vsc";
+  const apikey = "tP5yzrc589T694nvdUpCdzDP";
   try {
     const response = await fetch("https://api.remove.bg/v1.0/removebg", {
       method: "POST",
@@ -204,8 +200,8 @@ removeBgButton.addEventListener("click", async () => {
       ctx.drawImage(img, 0, 0);
       bgColorSelector.style.display = "block";
 
-     // Update the image source with the current canvas content
-        updateImage();
+      // Update the image source with the current canvas content
+      updateImage();
     };
   } catch (error) {
     console.error(error);
@@ -236,17 +232,18 @@ applyBgColorButton.addEventListener("click", () => {
   const data = imageData.data;
 
   for (let i = 0; i < data.length; i += 4) {
-    if (data[i + 3] === 0) { // Transparent pixel
-      data[i] = parseInt(bgColor.slice(1, 3), 16);     // R
+    if (data[i + 3] === 0) {
+      // Transparent pixel
+      data[i] = parseInt(bgColor.slice(1, 3), 16); // R
       data[i + 1] = parseInt(bgColor.slice(3, 5), 16); // G
       data[i + 2] = parseInt(bgColor.slice(5, 7), 16); // B
-      data[i + 3] = 255;                               // A
+      data[i + 3] = 255; // A
     }
   }
   ctx.putImageData(imageData, 0, 0);
 
-   // Update the image source with the current canvas content
-   updateImage();
+  // Update the image source with the current canvas content
+  updateImage();
 
   // Enable buttons after processing
   disableButtons(false);
@@ -265,8 +262,8 @@ function drawImage() {
   ctx.restore();
   photoCanvas.style.display = "block";
 
-   // Update the image source with the current canvas content
-   updateImage();
+  // Update the image source with the current canvas content
+  updateImage();
 }
 
 function updateImage() {
@@ -281,11 +278,21 @@ document.getElementById("addText").addEventListener("click", () => {
 
   // Clear the area where the name and date will be drawn
   const textAreaHeight = fontSize * 2 + 20; // Height of the text area with some padding
-  ctx.clearRect(0, photoCanvas.height - textAreaHeight, photoCanvas.width, textAreaHeight);
+  ctx.clearRect(
+    0,
+    photoCanvas.height - textAreaHeight,
+    photoCanvas.width,
+    textAreaHeight
+  );
 
   // Draw white strip (background for the text)
   ctx.fillStyle = "white";
-  ctx.fillRect(0, photoCanvas.height - textAreaHeight, photoCanvas.width, textAreaHeight);
+  ctx.fillRect(
+    0,
+    photoCanvas.height - textAreaHeight,
+    photoCanvas.width,
+    textAreaHeight
+  );
 
   // Set font style
   ctx.font = `bold ${fontSize}px Arial`;
@@ -301,14 +308,11 @@ document.getElementById("addText").addEventListener("click", () => {
   ctx.fillText(name, centerX, textY);
   ctx.fillText(date, centerX, textY + fontSize);
 
-    // Update the image source with the current canvas content
-    updateImage();
+  // Update the image source with the current canvas content
+  updateImage();
 
   hideLabels();
 });
-
-
-
 
 function resetTransformations() {
   currentRotation = 0;
@@ -342,7 +346,6 @@ function downloadImage() {
   link.href = photoCanvas.toDataURL();
   link.click();
 }
-
 
 // Function to disable or enable buttons
 function disableButtons(disable) {
@@ -416,7 +419,6 @@ function printImages() {
   printWindow.print();
 }
 
-
 let toggle = () => {
   let element = document.getElementById("button");
   let hidden = element.getAttribute("hidden");
@@ -438,7 +440,6 @@ let togglebtn = () => {
     element.setAttribute("hidden", "hidden");
   }
 };
-
 
 function unhideLabel() {
   var label = document.getElementById("myLabel");
@@ -521,7 +522,7 @@ function unhideRotate() {
   }
 }
 
-function  unhideCrop() {
+function unhideCrop() {
   var label = document.getElementById("myLabel8");
   if (label.style.display === "none") {
     label.style.display = "block";
@@ -548,7 +549,7 @@ function unhideCopy() {
   }
 }
 
-function unhideText()  {
+function unhideText() {
   var label = document.getElementById("myLabel9");
   if (label.style.display === "none") {
     label.style.display = "block";
@@ -568,7 +569,6 @@ document.getElementById("editingToolsBtn").addEventListener("click", () => {
 // document.getElementById("customPhotoBtn").addEventListener("click", () => {
 //   document.getElementById("myLabel").style.display = "block";
 // });
-
 
 document.getElementById("copiesBtn").addEventListener("click", () => {
   document.getElementById("myLabel3").style.display = "block";
