@@ -1,7 +1,16 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const upload = document.getElementById("upload");
-  const photoCanvas = document.getElementById("photoCanvas");
-  const ctx = photoCanvas.getContext("2d");
+const photoCanvas = document.getElementById("photoCanvas");
+const ctx = photoCanvas.getContext("2d", { willReadFrequently: true });
+const upload = document.getElementById("upload");
+const copiesContainer = document.getElementById("copies");
+const copyCountInput = document.getElementById("copyCount");
+const cropButton = document.getElementById("cropButton");
+// const image = document.getElementById("image");
+const confirmCropButton = document.getElementById("confirmCrop");
+
+const removeBgButton = document.getElementById("removeBgButton");
+const bgColorSelector = document.getElementById("backgroundColorSelector");
+const bgColorInput = document.getElementById("bgColor");
+const applyBgColorButton = document.getElementById("applyBgColor");
 
   const brightness = document.getElementById("brightness");
   const contrast = document.getElementById("contrast");
@@ -13,87 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const rotateOptions = document.querySelectorAll(".rotate button");
 
-  // // document
-  // //   .getElementById("cropCustom")
-  // //   .addEventListener("click", cropCustomSize);
-  // // document
-  // //   .getElementById("cropPassport")
-  // //   .addEventListener("click", cropToRatio);
-
-  // // =====CROP RATIO=====
-
-  // function cropToRatio() {
-  //   let targetRatio = 3 / 4;
-  //   let imgRatio = image.width / image.height;
-  //   let cropWidth, cropHeight;
-
-  //   if (imgRatio > targetRatio) {
-  //     cropHeight = image.height;
-  //     cropWidth = cropHeight * targetRatio;
-  //   } else {
-  //     cropWidth = image.width;
-  //     cropHeight = cropWidth / targetRatio;
-  //   }
-
-  //   let cropX = (image.width - cropWidth) / 2;
-  //   let cropY = (image.height - cropHeight) / 2;
-
-  //   cropImage(cropWidth, cropHeight, cropX, cropY);
-  // }
-
-  // // ====custom Crop====
-  // function cropCustomSize() {
-  //   let customWidth = parseInt(prompt("Enter custom width in pixels:", "300"));
-  //   let customHeight = parseInt(
-  //     prompt("Enter custom height in pixels:", "400")
-  //   );
-  //   let cropX = (image.width - customWidth) / 2;
-  //   let cropY = (image.height - customHeight) / 2;
-  //   cropImage(customWidth, customHeight, cropX, cropY);
-  // }
-
-  // function cropImage(width, height, startX, startY) {
-  //   let croppedCanvas = document.createElement("canvas");
-  //   let croppedCtx = croppedCanvas.getContext("2d");
-  //   croppedCanvas.width = width;
-  //   croppedCanvas.height = height;
-  //   croppedCtx.drawImage(
-  //     image,
-  //     startX,
-  //     startY,
-  //     width,
-  //     height,
-  //     0,
-  //     0,
-  //     width,
-  //     height
-  //   );
-  //   photoCanvas.width = width;
-  //   photoCanvas.height = height;
-  //   ctx.drawImage(croppedCanvas, 0, 0);
-  //   image.src = croppedCanvas.toDataURL(); // Update the original image with the cropped one
-  // }
-
-  // let image = new Image();
-  // let rotate = 0,
-  //   flipHorizontal = 1,
-  //   flipVertical = 1;
-
-  upload.addEventListener("change", (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-
-    reader.onload = (event) => {
-      image.src = event.target.result;
-    };
-    reader.readAsDataURL(file);
-  });
-
-  image.onload = () => {
-    photoCanvas.width = image.width;
-    photoCanvas.height = image.height;
-    applyFilters();
-  };
 
   const applyFilters = () => {
     ctx.clearRect(0, 0, photoCanvas.width, photoCanvas.height);
@@ -121,6 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       ctx.putImageData(imageData, 0, 0);
     }
+    
   };
 
   brightness.addEventListener("input", applyFilters);
@@ -146,23 +75,367 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-//   // ===Text and Date Add ===
 
-//   document.getElementById("addText").addEventListener("click", () => {
-//     let name = document.getElementById("nameInput").value;
-//     let date = document.getElementById("dateInput").value;
 
-//     // Draw white strip
-//     ctx.fillStyle = "white";
-//     ctx.fillRect(0, photoCanvas.height - 60, photoCanvas.width - 50, 100);
-
-//     // Draw text
-//     ctx.font = "bold 40px Arial";
-//     ctx.fillStyle = "black";
-//     ctx.fillText(name, 300, photoCanvas.height - 30);
-//     ctx.fillText(date, 300, photoCanvas.height);
-//   });
+rotateOptions.forEach((option) => {
+  option.addEventListener("click", () => {
+    if (option.id === "left") {
+      rotate -= 90;
+    } else if (option.id === "right") {
+      rotate += 90;
+    } else if (option.id === "horizontal") {
+      flipHorizontal = flipHorizontal === 1 ? -1 : 1;
+    } else {
+      flipVertical = flipVertical === 1 ? -1 : 1;
+    }
+    applyFilters();
+  });
 });
+
+
+
+
+
+
+let originalImageData;
+
+let image =new Image();
+let cropper;
+let currentRotation = 0;
+let flippedHorizontal = false;
+let flippedVertical = false;
+
+upload.addEventListener("change", (event) => {
+  const file = event.target.files[0];
+  const reader = new FileReader();
+
+  // Disable the upload input while the image is being processed
+  upload.disabled = true;
+
+  reader.onload = (e) => {
+    image.src = e.target.result;
+    image.style.display = "block";
+    image.onload = () => {
+      photoCanvas.width = image.width;
+      photoCanvas.height = image.height;
+      ctx.drawImage(image, 0, 0);
+      originalImageData = ctx.getImageData(
+        0,
+        0,
+        photoCanvas.width,
+        photoCanvas.height
+      );
+
+      if (cropper) {
+        cropper.destroy();
+      }
+      image.style.display = "none";
+      // Enable the upload input after the image is loaded
+      upload.disabled = false;
+    };
+  };
+  reader.readAsDataURL(file);
+});
+
+image.onload = () => {
+  photoCanvas.width = image.width;
+  photoCanvas.height = image.height;
+  applyFilters();
+};
+
+// Crop functionality
+cropButton.addEventListener("click", () => {
+  if (cropper) {
+    cropper.destroy();
+  }
+  cropper = new Cropper(photoCanvas, {
+    aspectRatio: NaN,
+    viewMode: 1,
+  });
+  confirmCropButton.style.display = "inline-block";
+});
+
+confirmCropButton.addEventListener("click", () => {
+  const croppedCanvas = cropper.getCroppedCanvas();
+  photoCanvas.width = croppedCanvas.width;
+  photoCanvas.height = croppedCanvas.height;
+  ctx.clearRect(0, 0, photoCanvas.width, photoCanvas.height);
+  ctx.drawImage(croppedCanvas, 0, 0);
+  cropper.destroy();
+  confirmCropButton.style.display = "none";
+  upload.disabled = false; // Re-enable the upload button after cropping
+
+   // Update the image source with the current canvas content
+   updateImage();
+
+  hideLabels();
+});
+
+// Remove background functionality
+removeBgButton.addEventListener("click", async () => {
+    if (!image.src) return;
+
+  // Disable buttons while processing
+  disableButtons(true);
+
+  // Display a loading text or spinner on the canvas
+  ctx.clearRect(0, 0, photoCanvas.width, photoCanvas.height);
+  ctx.font = "30px Arial";
+  ctx.fillStyle = "black";
+  ctx.textAlign = "center";
+  ctx.fillText("Loading...", photoCanvas.width / 2, photoCanvas.height / 2);
+
+  // // Convert canvas to file-like object (Blob) if needed
+  // let file;
+  // if ( image.src) {
+  //   file = upload.files[0];
+  // } else {
+  //   file = await fetch(photoCanvas.toDataURL()).then(res => res.blob());
+  // }
+   // Convert the current canvas content to a file-like object (Blob)
+   const file = await fetch(photoCanvas.toDataURL()).then((res) => res.blob());
+
+  const formData = new FormData();
+  formData.append("image_file", file);
+  formData.append("size", "auto");
+
+  const apikey = "ohpRYQcMRh3QMmre5TrR1Vsc";
+  try {
+    const response = await fetch("https://api.remove.bg/v1.0/removebg", {
+      method: "POST",
+      headers: {
+        "X-Api-Key": apikey,
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to remove background");
+    }
+
+    const resultBlob = await response.blob();
+    const resultUrl = URL.createObjectURL(resultBlob);
+    const img = new Image();
+    img.src = resultUrl;
+    img.onload = () => {
+      ctx.clearRect(0, 0, photoCanvas.width, photoCanvas.height);
+      photoCanvas.width = img.width;
+      photoCanvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+      bgColorSelector.style.display = "block";
+
+     // Update the image source with the current canvas content
+        updateImage();
+    };
+  } catch (error) {
+    console.error(error);
+    ctx.clearRect(0, 0, photoCanvas.width, photoCanvas.height);
+    ctx.fillText(
+      "Error loading image",
+      photoCanvas.width / 2,
+      photoCanvas.height / 2
+    );
+  } finally {
+    // Enable buttons after processing
+    disableButtons(false);
+  }
+});
+
+// Apply background color functionality
+applyBgColorButton.addEventListener("click", () => {
+  // Disable buttons while processing
+  disableButtons(true);
+
+  const bgColor = bgColorInput.value;
+  const imageData = ctx.getImageData(
+    0,
+    0,
+    photoCanvas.width,
+    photoCanvas.height
+  );
+  const data = imageData.data;
+
+  for (let i = 0; i < data.length; i += 4) {
+    if (data[i + 3] === 0) { // Transparent pixel
+      data[i] = parseInt(bgColor.slice(1, 3), 16);     // R
+      data[i + 1] = parseInt(bgColor.slice(3, 5), 16); // G
+      data[i + 2] = parseInt(bgColor.slice(5, 7), 16); // B
+      data[i + 3] = 255;                               // A
+    }
+  }
+  ctx.putImageData(imageData, 0, 0);
+
+   // Update the image source with the current canvas content
+   updateImage();
+
+  // Enable buttons after processing
+  disableButtons(false);
+  hideLabels();
+});
+
+function drawImage() {
+  photoCanvas.width = image.width;
+  photoCanvas.height = image.height;
+  ctx.clearRect(0, 0, photoCanvas.width, photoCanvas.height);
+  ctx.save();
+  ctx.translate(photoCanvas.width / 2, photoCanvas.height / 2);
+  ctx.rotate((currentRotation * Math.PI) / 180);
+  ctx.scale(flippedHorizontal ? -1 : 1, flippedVertical ? -1 : 1);
+  ctx.drawImage(image, -image.width / 2, -image.height / 2);
+  ctx.restore();
+  photoCanvas.style.display = "block";
+
+   // Update the image source with the current canvas content
+   updateImage();
+}
+
+function updateImage() {
+  image.src = photoCanvas.toDataURL();
+}
+
+// ADD TEXT NAME AND DATE
+document.getElementById("addText").addEventListener("click", () => {
+  const name = document.getElementById("nameInput").value;
+  const date = document.getElementById("dateInput").value;
+  const fontSize = parseInt(document.getElementById("fontSizeInput").value, 10);
+
+  // Clear the area where the name and date will be drawn
+  const textAreaHeight = fontSize * 2 + 20; // Height of the text area with some padding
+  ctx.clearRect(0, photoCanvas.height - textAreaHeight, photoCanvas.width, textAreaHeight);
+
+  // Draw white strip (background for the text)
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, photoCanvas.height - textAreaHeight, photoCanvas.width, textAreaHeight);
+
+  // Set font style
+  ctx.font = `bold ${fontSize}px Arial`;
+  ctx.fillStyle = "black";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+
+  // Calculate text position
+  const centerX = photoCanvas.width / 2;
+  const textY = photoCanvas.height - fontSize - 10;
+
+  // Draw text centered
+  ctx.fillText(name, centerX, textY);
+  ctx.fillText(date, centerX, textY + fontSize);
+
+    // Update the image source with the current canvas content
+    updateImage();
+
+  hideLabels();
+});
+
+
+
+
+function resetTransformations() {
+  currentRotation = 0;
+  flippedHorizontal = false;
+  flippedVertical = false;
+}
+
+function rotateLeft() {
+  currentRotation -= 90;
+  drawImage();
+}
+
+function rotateRight() {
+  currentRotation += 90;
+  drawImage();
+}
+
+function flipHorizontal() {
+  flippedHorizontal = !flippedHorizontal;
+  drawImage();
+}
+
+function flipVertical() {
+  flippedVertical = !flippedVertical;
+  drawImage();
+}
+
+function downloadImage() {
+  const link = document.createElement("a");
+  link.download = "edited-photo.png";
+  link.href = photoCanvas.toDataURL();
+  link.click();
+}
+
+
+// Function to disable or enable buttons
+function disableButtons(disable) {
+  const buttons = [removeBgButton, applyBgColorButton, confirmCropButton];
+  buttons.forEach((btn) => {
+    btn.disabled = disable;
+  });
+}
+// Enable cropper and disable upload while cropping
+document.getElementById("cropButton").addEventListener("click", () => {
+  if (cropper) {
+    cropper.destroy();
+  }
+  cropper = new Cropper(photoCanvas, {
+    aspectRatio: NaN,
+    viewMode: 1,
+  });
+  confirmCropButton.style.display = "inline-block";
+  upload.disabled = true; // Disable the upload button during cropping
+});
+
+function copyImage() {
+  const copyCount = parseInt(copyCountInput.value);
+  if (image.src && copyCount > 0) {
+    copiesContainer.innerHTML = ""; // Clear previous copies
+    for (let i = 0; i < copyCount; i++) {
+      const copiedImg = new Image();
+      copiedImg.src = photoCanvas.toDataURL();
+      copiedImg.classList.add("copied-image");
+      copiesContainer.appendChild(copiedImg);
+    }
+  } else {
+    alert("Please upload an image and specify a valid number of copies.");
+  }
+  hideLabels();
+}
+
+function printImages() {
+  if (copiesContainer.children.length === 0) {
+    alert("No images to print.");
+    return;
+  }
+
+  const printWindow = window.open("", "", "height=600,width=800");
+  const styles = `
+        <style>
+            body { margin: 0; padding: 0; }
+            .print-container { display: flex; flex-wrap: wrap; }
+            .copied-image { margin: 10px; border: 1px solid #ccc; width: 150px; height: 150px; }
+        </style>
+    `;
+  const content = `
+        <html>
+        <head>
+            ${styles}
+        </head>
+        <body>
+            <div class="print-container">
+                ${Array.from(copiesContainer.children)
+                  .map(
+                    (child) => `<img src="${child.src}" class="copied-image">`
+                  )
+                  .join("")}
+            </div>
+        </body>
+        </html>
+    `;
+  printWindow.document.write(content);
+  printWindow.document.close();
+  printWindow.focus();
+  printWindow.print();
+}
+
 
 let toggle = () => {
   let element = document.getElementById("button");
@@ -246,14 +519,15 @@ function unhideLabel5() {
 }
 
 function hideLabels() {
-  const labels = document.querySelectorAll("#myLabel, #myLabel1, #myLabel2, #myLabel3, #myLabel4, #myLabel5");
+  const labels = document.querySelectorAll(
+    "#myLabel, #myLabel1, #myLabel2, #myLabel3, #myLabel4, #myLabel5"
+  );
   labels.forEach((label) => {
     label.style.display = "none";
   });
 }
 
-
-function unhideTools(){
+function unhideTools() {
   var label = document.getElementById("myLabel6");
   if (label.style.display === "none") {
     label.style.display = "block";
@@ -262,7 +536,7 @@ function unhideTools(){
   }
 }
 
-function unhideRotate(){
+function unhideRotate() {
   var label = document.getElementById("myLabel7");
   if (label.style.display === "none") {
     label.style.display = "block";
@@ -271,7 +545,7 @@ function unhideRotate(){
   }
 }
 
-function unhideCopy(){
+function  unhideCrop() {
   var label = document.getElementById("myLabel8");
   if (label.style.display === "none") {
     label.style.display = "block";
@@ -280,306 +554,57 @@ function unhideCopy(){
   }
 }
 
-
-
-// ===== ROTATE AND FLIP=====
-const photoCanvas = document.getElementById("photoCanvas");
-const ctx = photoCanvas.getContext("2d");
-const upload = document.getElementById("upload");
-const copiesContainer = document.getElementById("copies");
-const copyCountInput = document.getElementById("copyCount");
-const cropButton = document.getElementById("cropButton");
-const image = document.getElementById("image");
-const confirmCropButton = document.getElementById("confirmCrop");
-
-const removeBgButton = document.getElementById('removeBgButton');
-const bgColorSelector = document.getElementById('backgroundColorSelector');
-const bgColorInput = document.getElementById('bgColor');
-const applyBgColorButton = document.getElementById('applyBgColor');
-
-let originalImageData;
-
-let cropper;
-let currentRotation = 0;
-let flippedHorizontal = false;
-let flippedVertical = false;
-
-upload.addEventListener("change", (event) => {
-  const file = event.target.files[0];
-  const reader = new FileReader();
-
-  // Disable the upload input while the image is being processed
-  upload.disabled = true;
-
-  reader.onload = (e) => {
-    image.src = e.target.result;
-    image.style.display = "block";
-    image.onload = () => {
-      photoCanvas.width = image.width;
-      photoCanvas.height = image.height;
-      ctx.drawImage(image, 0, 0);
-      originalImageData = ctx.getImageData(0, 0, photoCanvas.width, photoCanvas.height);
-      
-      if (cropper) {
-        cropper.destroy();
-      }
-      image.style.display = "none";
-       // Enable the upload input after the image is loaded
-       upload.disabled = false;
-    };
-  };
-  reader.readAsDataURL(file);
-});
-
-
-removeBgButton.addEventListener('click', async () => {
-  if (!upload.files.length) return;
-
-  // Disable buttons while processing
-  disableButtons(true);
-
-  const file = upload.files[0];
-  const formData = new FormData();
-  formData.append('image_file', file);
-  formData.append('size', 'auto');
-
-  const apikey='ohpRYQcMRh3QMmre5TrR1Vsc';
-  const response = await fetch('https://api.remove.bg/v1.0/removebg', {
-      method: 'POST',
-      headers: {
-          'X-Api-Key': 'ohpRYQcMRh3QMmre5TrR1Vsc'
-      },
-      body: formData
-  });
-
-  const resultBlob = await response.blob();
-  const resultUrl = URL.createObjectURL(resultBlob);
-  const img = new Image();
-  img.src = resultUrl;
-  img.onload = () => {
-      ctx.clearRect(0, 0, photoCanvas.width,photoCanvas.height);
-      photoCanvas.width = img.width;
-      photoCanvas.height = img.height;
-      ctx.drawImage(img, 0, 0);
-      bgColorSelector.style.display = 'block';
-  };
-  // Enable buttons after processing
-  disableButtons(false);
-});
-
-applyBgColorButton.addEventListener('click', () => {
-   // Disable buttons while processing
-   disableButtons(true);
-  const bgColor = bgColorInput.value;
-  const imageData = ctx.getImageData(0, 0,photoCanvas.width, photoCanvas.height);
-  const data = imageData.data;
-
-  for (let i = 0; i < data.length; i += 4) {
-      if (data[i + 3] === 0) { // Transparent pixel
-          data[i] = parseInt(bgColor.slice(1, 3), 16);     // R
-          data[i + 1] = parseInt(bgColor.slice(3, 5), 16); // G
-          data[i + 2] = parseInt(bgColor.slice(5, 7), 16); // B
-          data[i + 3] = 255;                               // A
-      }
+function unhideMin() {
+  var label = document.getElementById("myLabel10");
+  if (label.style.display === "none") {
+    label.style.display = "block";
+  } else {
+    label.style.display = "none";
   }
-  ctx.putImageData(imageData, 0, 0);
-   // Enable buttons after processing
-   disableButtons(false);
-  hideLabels();
-});
-
-
-function drawImage() {
-  photoCanvas.width = image.width;
-  photoCanvas.height = image.height;
-  ctx.clearRect(0, 0, photoCanvas.width, photoCanvas.height);
-  ctx.save();
-  ctx.translate(photoCanvas.width / 2, photoCanvas.height / 2);
-  ctx.rotate((currentRotation * Math.PI) / 180);
-  ctx.scale(flippedHorizontal ? -1 : 1, flippedVertical ? -1 : 1);
-  ctx.drawImage(image, -image.width / 2, -image.height / 2);
-  ctx.restore();
-  photoCanvas.style.display = "block";
 }
 
+function unhideCopy() {
+  var label = document.getElementById("myLabel11");
+  if (label.style.display === "none") {
+    label.style.display = "block";
+  } else {
+    label.style.display = "none";
+  }
+}
 
-// ADD TEXT NAME AND DATE
-document.getElementById("addText").addEventListener("click", () => {
-  const name = document.getElementById("nameInput").value;
-  const date = document.getElementById("dateInput").value;
-  const fontSize = parseInt(document.getElementById("fontSizeInput").value, 10);
+function unhideText()  {
+  var label = document.getElementById("myLabel9");
+  if (label.style.display === "none") {
+    label.style.display = "block";
+  } else {
+    label.style.display = "none";
+  }
+}
 
-  // Draw white strip
-  ctx.fillStyle = "white";
-  ctx.fillRect(0, photoCanvas.height - fontSize * 2, photoCanvas.width, fontSize * 2);
-
-  // Set font style
-  ctx.font = `bold ${fontSize}px Arial`;
-  ctx.fillStyle = "black";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-
-  // Calculate text position
-  const centerX = photoCanvas.width / 2;
-  const textY = photoCanvas.height - fontSize - 10;
-
-  // Draw text centered
-  ctx.fillText(name, centerX, textY);
-  ctx.fillText(date, centerX, textY + fontSize);
-  hideLabels();
+document.getElementById("rotateFlipBtn").addEventListener("click", () => {
+  document.getElementById("myLabel2").style.display = "block";
 });
 
+document.getElementById("editingToolsBtn").addEventListener("click", () => {
+  document.getElementById("myLabel4").style.display = "block";
+});
 
-// // ADD TEXT NAME AND DATE
-// document.getElementById("addText").addEventListener("click", () => {
-//   let name = document.getElementById("nameInput").value;
-//   let date = document.getElementById("dateInput").value;
-
-//   // Draw white strip
-//   ctx.fillStyle = "white";
-//   ctx.fillRect(0, photoCanvas.height - 60, photoCanvas.width, 60);
-
-//   // Set font style
-//   ctx.font = "bold 30px Arial";
-//   ctx.fillStyle = "black";
-//   ctx.textAlign = "center";
-//   ctx.textBaseline = "middle";
-
-//   // Calculate text position
-//   const centerX = photoCanvas.width / 2;
-//   const textY = photoCanvas.height - 45;
-
-//   // Draw text centered
-//   ctx.fillText(name, centerX, textY - 10);
-//   ctx.fillText(date, centerX, textY + 25);
-//   hideLabels();
+// document.getElementById("customPhotoBtn").addEventListener("click", () => {
+//   document.getElementById("myLabel").style.display = "block";
 // });
 
 
-function resetTransformations() {
-  currentRotation = 0;
-  flippedHorizontal = false;
-  flippedVertical = false;
-}
 
-function rotateLeft() {
-  currentRotation -= 90;
-  drawImage();
-}
 
-function rotateRight() {
-  currentRotation += 90;
-  drawImage();
-}
 
-function flipHorizontal() {
-  flippedHorizontal = !flippedHorizontal;
-  drawImage();
-}
-
-function flipVertical() {
-  flippedVertical = !flippedVertical;
-  drawImage();
-}
-
-function downloadImage() {
-  const link = document.createElement("a");
-  link.download = "edited-photo.png";
-  link.href = photoCanvas.toDataURL();
-  link.click();
-}
-
-cropButton.addEventListener("click", () => {
-  if (cropper) {
-    cropper.destroy();
-  }
-  cropper = new Cropper(photoCanvas, {
-    aspectRatio: NaN,
-    viewMode: 1,
-  });
-  confirmCropButton.style.display = "inline-block";
+document.getElementById("copiesBtn").addEventListener("click", () => {
+  document.getElementById("myLabel3").style.display = "block";
 });
 
-confirmCropButton.addEventListener("click", () => {
-  const croppedCanvas = cropper.getCroppedCanvas();
-  photoCanvas.width = croppedCanvas.width;
-  photoCanvas.height = croppedCanvas.height;
-  ctx.drawImage(croppedCanvas, 0, 0);
-  cropper.destroy();
-  confirmCropButton.style.display = "none";
-  upload.disabled = false; // Re-enable the upload button after cropping
-  hideLabels();
+document.getElementById("printLayoutBtn").addEventListener("click", () => {
+  printImages();
 });
 
-  // Function to disable or enable buttons
-  function disableButtons(disable) {
-    const buttons = [removeBgButton, applyBgColorButton, confirmCropButton];
-    buttons.forEach((btn) => {
-      btn.disabled = disable;
-    });
-  }
-   // Enable cropper and disable upload while cropping
- document.getElementById("cropButton").addEventListener("click", () => {
-  if (cropper) {
-    cropper.destroy();
-  }
-  cropper = new Cropper(photoCanvas, {
-    aspectRatio: NaN,
-    viewMode: 1,
-  });
-  confirmCropButton.style.display = "inline-block";
-  upload.disabled = true; // Disable the upload button during cropping
+document.getElementById("downloadBtn").addEventListener("click", () => {
+  downloadImage();
 });
-
-
-function copyImage() {
-  const copyCount = parseInt(copyCountInput.value);
-  if (image.src && copyCount > 0) {
-    copiesContainer.innerHTML = ""; // Clear previous copies
-    for (let i = 0; i < copyCount; i++) {
-      const copiedImg = new Image();
-      copiedImg.src = photoCanvas.toDataURL();
-      copiedImg.classList.add("copied-image");
-      copiesContainer.appendChild(copiedImg);
-    }
-  } else {
-    alert("Please upload an image and specify a valid number of copies.");
-  }
-  hideLabels();
-}
-
-function printImages() {
-  if (copiesContainer.children.length === 0) {
-    alert("No images to print.");
-    return;
-  }
-
-  const printWindow = window.open("", "", "height=600,width=800");
-  const styles = `
-        <style>
-            body { margin: 0; padding: 0; }
-            .print-container { display: flex; flex-wrap: wrap; }
-            .copied-image { margin: 10px; border: 1px solid #ccc; width: 150px; height: 150px; }
-        </style>
-    `;
-  const content = `
-        <html>
-        <head>
-            ${styles}
-        </head>
-        <body>
-            <div class="print-container">
-                ${Array.from(copiesContainer.children)
-                  .map(
-                    (child) => `<img src="${child.src}" class="copied-image">`
-                  )
-                  .join("")}
-            </div>
-        </body>
-        </html>
-    `;
-  printWindow.document.write(content);
-  printWindow.document.close();
-  printWindow.focus();
-  printWindow.print();
-}

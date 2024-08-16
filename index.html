@@ -496,34 +496,180 @@
 
 
 
+ <!-- Container for buttons on small screens -->
+ <div class="bottom-buttons">
+  <button id="rotateFlipBtn" onclick=" unhideRotate()"> <i class='bx bx-analyse '>Rotate & Flip</i></button>
+  <button id="editingToolsBtn" onclick="unhideTools()"> <i class='bx bxs-image-alt '>Editing Tools</i></button>
+<button  onclick="unhideCrop()">  <i class="bx bx-crop ">Crop Photo</i></button>
+  <button  onclick="unhideText()"> <i class='bx bx-comment ' >Add Text</i></button>
+  <button onclick="unhideMin()"> <i class="bx bx-minus-back ">Remove Bg</i></button>
+  <button id="copiesBtn"  onclick="unhideCopy()"><i class='bx bxs-copy '  >No of Copies</i></button>
+  <button id="printLayoutBtn"><i class="bx bx-printer ">Print</i></button>
+  <button id="downloadBtn"> <i class='bx bxs-download  '>Download</i></button>
+</div>
 
-        <!-- <div  class="display-image"> -->
-    
-          
-        <!-- </div> -->
+<!-- //OPTION1 -->
+<label class="hide-btn2" id="myLabel7" style="display: none;">
+  <div  class="options">
+    <button class="btn3" onclick="rotateLeft()"><i class="bx bx-rotate-left"></i></button>
+    <button class="btn3" onclick="rotateRight()"><i class='bx bx-rotate-right'></i></button>
+    <button class="btn3" onclick="flipHorizontal()"><i class='bx bx-reflect-vertical'></i></button>
+    <button class="btn3" onclick="flipVertical()"><i class='bx bx-reflect-horizontal' ></i></button>
+   </div>
+</label> 
 
-    
+<!-- //OPTION1 -->
+<label class="hide-btn4" id="myLabel6" style="display: none;">
+  <li class="nav-link">
+      <i class="bx bx-brightness-half ">
+        <span class="text nav-text"> Brightness</span>
+      </i>
+  </li>
 
-    
+  <div class="label-brightness">
+    <label   for="brightness"></label>
+    <input
+      type="range"
+      id="brightness"
+      min="0"
+      max="200"
+      value="100"
+    />
+  </div>
+
+  <li class="nav-link">
+      <i class="bx bxs-circle-half ">
+        <span class="text nav-text"> Contrast</span>
+      </i>
+  </li>
+
+  <div class="label-contrast">
+      <label for="contrast"></label>
+      <input type="range" id="contrast" min="0" max="200" value="100" />
+  </div>
+
+  <li class="nav-link">
+      <i class="bx bxs-tone ">
+        <span class="text nav-text">Grayscale</span>
+      </i>
+  </li>
+
+  <div class="label-grayscale">
+    <label for="grayscale"></label>
+   <input type="range" id="grayscale" min="0" max="100" value="0" />
+  </div>
+
+  <li class="nav-link">
+    <i class='bx bx-checkbox-square'>
+      <span class="text nav-text">Saturation</span>
+    </i>
+   </li>
+
+<div class="label-saturation">
+    <label for="saturation"></label>
+    <input type="range" id="saturation" min="0" max="200" value="100">
+</div>
+
+
+<li class="nav-link">
+  <i class='bx bx-shape-triangle'>
+    <span class="text nav-text">Sharpness</span>
+  </i>
+</li>
+
+<div class="label-sharpness">
+  <label for="sharpness"></label>
+  <input type="range" id="sharpness" min="0" max="100" value="0">
+</div>
+
+
+<li class="nav-link">
+<i class="bx bxs-tone ">
+  <span class="text nav-text">Red-Eye Reduction</span>
+</i>
+</li>
+
+<div class="label-redeye">
+<label for="redeye"></label>
+<input type="range" id="redeye" min="0" max="100" value="0">
+</div>
+
+
+<li class="nav-link">
+<i class='bx bxs-palette'>
+<span class="text nav-text">Color Balance</span>
+</i>
+</li>
+
+<div class="label-colorBalance">
+<label for="saturation"></label>
+<input type="range" id="colorBalance" min="-100" max="100" value="0">
+</div>
+
+
+</label>
+
+  <!-- //OPTION1 -->
+<label class="hide-btn3" id="myLabel11" style="display: none;">
+
+  <input type="number" id="copyCount" min="1" max="50" value="1">
+
+<button class="copy-btn" onclick="copyImage()">Copy Image</button>
+</label>
+
+
+  <!-- //OPTION1 -->
+<label class="hide-btn1" id="myLabel8"  style="display: none;">
+  <button class="btn1" id="cropButton">Crop Image</button>
+  <button class="btn1" id="confirmCrop" style="display:none;">Confirm Crop</button>
+</label>
+<div class="controls">
+
+
+  <!-- //OPTION1 -->
+  <label class="hide-btn5" id="myLabel10" style="display: none;">
+
+    <button  id="removeBgButton">Remove Background</button>
+    <div id="backgroundColorSelector" style="display:none;">
+        <label class="label" for="bgColor">Select Background Color:</label>
+        <input   type="color" id="bgColor" value="#ffffff">
+        <button  id="applyBgColor">Apply Background Color</button>
+    </div>
+  </label>
+
+
+
+    <!-- //OPTION1 -->
+  <label class="hide-btn" id="myLabel9" style="display: none;">
+    <div  class="label-textName">
+      <label for="nameInput" ></label>
+      <input type="text" id="nameInput" placeholder="Enter Your Name" />
+      <label for="dateInput"></label>
+      <input type="date" id="dateInput" />
+      <label for="fontSizeInput">Font Size:</label>
+      <input type="number" id="fontSizeInput" value="30" min="10" max="100"> 
+      <input type="submit" value="Add" id="addText" >
+      <!-- <button id="addText">Add </button> -->
+
+    </div>
+   
+  </label>
+
   
-  
-
-
-
-    <label class="hide-btn" id="myLabel1" style="display: none;">
-      <div  class="label-textName">
-        <label for="nameInput"></label>
-        <input type="text" id="nameInput" />
-        <label for="dateInput"></label>
-        <input type="date" id="dateInput" />
-        <label for="fontSizeInput"></label>
-        <input type="number" id="fontSizeInput" value="30" min="10" max="100"> 
-        <input type="submit" value="Add" id="addText">
-        <!-- <button id="addText">Add </button> -->
-
-      </div>
-     
-    </label>
+        <label class="hide-btn" id="myLabel1" style="display: none;">
+          <div  class="label-textName">
+            <label for="nameInput" ></label>
+            <input type="text" id="nameInput" placeholder="Enter Your Name" />
+            <label for="dateInput"></label>
+            <input type="date" id="dateInput" />
+            <label for="fontSizeInput">Font Size:</label>
+            <input type="number" id="fontSizeInput" value="30" min="10" max="100"> 
+            <input type="submit" value="Add" id="addText" >
+            <!-- <button id="addText">Add </button> -->
+    
+          </div>
+         
+        </label>
     
      
 
@@ -550,7 +696,8 @@
        
        
        
-        <div id="copies" class="copies-container"></div>
+        <div id="copies" class="copies-container" style="height: 0;"></div>
+
       </div>
     </div>
     <!-- </div> -->
