@@ -77,26 +77,6 @@ const applyBgColorButton = document.getElementById("applyBgColor");
 
 
 
-rotateOptions.forEach((option) => {
-  option.addEventListener("click", () => {
-    if (option.id === "left") {
-      rotate -= 90;
-    } else if (option.id === "right") {
-      rotate += 90;
-    } else if (option.id === "horizontal") {
-      flipHorizontal = flipHorizontal === 1 ? -1 : 1;
-    } else {
-      flipVertical = flipVertical === 1 ? -1 : 1;
-    }
-    applyFilters();
-  });
-});
-
-
-
-
-
-
 let originalImageData;
 
 let image =new Image();
